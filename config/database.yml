@@ -52,23 +52,25 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
+# Production takes every connection detail from a full URL per database — no
+# credentials in this file. Kamal must provide all four:
+#   DATABASE_URL, CACHE_DATABASE_URL, QUEUE_DATABASE_URL, CABLE_DATABASE_URL
+# e.g. postgres://user:pass@host:5432/simi_production_cache
 production:
   primary: &primary_production
-    <<: *default
-    database: simi_production
-    # Require the secret from the environment (Kamal), no committed fallback.
-    # Only raise when actually booting production — `db:prepare` renders this
-    # whole file in every environment, so an unconditional fetch breaks CI.
-    password: <%= ENV.fetch("DB_PASSWORD") { raise "DB_PASSWORD is required in production" if Rails.env.production? } %>
+    adapter: postgresql
+    encoding: unicode
+    url: <%= ENV["DATABASE_URL"] %>
+    max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 10 } %>
   cache:
     <<: *primary_production
-    database: simi_production_cache
+    url: <%= ENV["CACHE_DATABASE_URL"] %>
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: simi_production_queue
+    url: <%= ENV["QUEUE_DATABASE_URL"] %>
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: simi_production_cable
+    url: <%= ENV["CABLE_DATABASE_URL"] %>
     migrations_paths: db/cable_migrate
