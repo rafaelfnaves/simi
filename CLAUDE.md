@@ -42,7 +42,10 @@ Rails code here should read as clean, simple, and self-explanatory. Lean on clea
 - `docker compose -f docker/compose-dev.yaml up` — Postgres and Mailpit (web UI `localhost:8025`).
 - `bin/setup` to bootstrap, `bin/dev` to run the server + CSS watcher (via `Procfile.dev`).
 - `dotenv` loads `.env` (gitignored, `:development`/`:test` only) for local env vars.
-- DB connection is ENV-driven: `config/database.yml` reads `DB_HOST` / `DB_PORT` / `DB_USERNAME` / `DB_PASSWORD` (local `.env` defaults the port to 5454; `default:` fallbacks target CI's 5432 service). `production` requires `DB_PASSWORD` with no fallback.
+- DB config is ENV-driven, and dev/test differ from production:
+  - **dev / test** — the `default:` block reads `DB_HOST` / `DB_PORT` / `DB_USERNAME` / `DB_PASSWORD` with fallbacks (`localhost` / `5432` / `simi` / `123456`); local `.env` sets the port to 5454, CI relies on the 5432 fallback.
+  - **production** — does not use `default:` and carries no credentials. Each connection takes a full URL from its own env var: `DATABASE_URL` (primary), `CACHE_DATABASE_URL`, `QUEUE_DATABASE_URL`, `CABLE_DATABASE_URL` — all four required. Kamal must supply them (`config/deploy.yml` `env:` / `.kamal/secrets`).
+  - `bin/rails db:prepare` renders the whole file in every environment, so keep production ERB non-raising (no bare `ENV.fetch` without a default/block).
 
 ## Git
 
