@@ -56,9 +56,9 @@ production:
   primary: &primary_production
     <<: *default
     database: simi_production
-    # No fallback in production — raise if the secret is missing rather than
-    # inheriting the dev default from `default:`.
-    password: <%= ENV.fetch("DB_PASSWORD") %>
+    # Take the secret straight from the environment (Kamal) with no committed
+    # fallback — nil here surfaces as a connection error, never the dev default.
+    password: <%= ENV["DB_PASSWORD"] %>
   cache:
     <<: *primary_production
     database: simi_production_cache
