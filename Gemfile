@@ -79,3 +79,5 @@ gem "resend"
 
 gem "sentry-ruby"
 gem "sentry-rails"
+
+gem "tailwindcss-rails", "~> 4.6"

@@ -3,15 +3,15 @@ services:
     image: postgres:18-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: simi
-      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: ${DB_USERNAME:-simi}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-123456}
       POSTGRES_DB: simi_development
     ports:
-      - "5454:5432"
+      - "${DB_PORT:-5454}:5432"
     volumes:
       - simi_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U simi -d simi_development"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-simi} -d simi_development"]
       interval: 5s
       timeout: 3s
       retries: 10
