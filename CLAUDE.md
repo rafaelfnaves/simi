@@ -51,3 +51,5 @@ Rails code here should read as clean, simple, and self-explanatory. Lean on clea
 
 - Feature branch off `main`, then PR.
 - Conventional Commit messages (`feat:`, `fix:`, `chore:` …).
+
+/file:.claude-on-rails/context.md

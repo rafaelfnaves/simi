@@ -65,6 +65,8 @@ group :development, :test do
 end
 
 group :development do
+  gem "claude-on-rails", "~> 0.2.0"
+
   gem "ruby_ui", "~> 1.6", require: false
 
   # Use console on exceptions pages [https://github.com/rails/web-console]

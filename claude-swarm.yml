@@ -1,0 +1,78 @@
+version: 1
+swarm:
+  name: "Simi Rails Development Team"
+  main: architect
+
+  mcps:
+    - name: rails
+      type: stdio
+      command: rails-mcp-server
+      args: []
+      env:
+        RAILS_ENV: development
+
+  instances:
+    architect:
+      description: "Rails architect coordinating full-stack development for Simi (Phlex + RubyUI, importmap, Solid Queue, Kamal)"
+      directory: .
+      model: opus
+      connections: [models, controllers, views, stimulus, services, jobs, tests, devops]
+      prompt_file: .claude-on-rails/prompts/architect.md
+      allowed_tools: [Read, Edit, Grep, Glob, LS, Bash]
+
+    models:
+      description: "ActiveRecord models, migrations, and database optimization specialist"
+      directory: ./app/models
+      model: opus
+      allowed_tools: [Read, Edit, Write, Bash, Grep, Glob, LS]
+      prompt_file: .claude-on-rails/prompts/models.md
+
+    controllers:
+      description: "Rails controllers, routing, and request handling specialist (renders Phlex view classes)"
+      directory: ./app/controllers
+      model: sonnet
+      allowed_tools: [Read, Edit, Write, Bash, Grep, Glob, LS]
+      prompt_file: .claude-on-rails/prompts/controllers.md
+
+    views:
+      description: "Phlex views and components specialist — RubyUI components, TailwindCSS, tailwind_merge"
+      directory: [./app/views, ./app/components]
+      model: sonnet
+      connections: [stimulus]
+      allowed_tools: [Read, Edit, Write, Bash, Grep, Glob, LS]
+      prompt_file: .claude-on-rails/prompts/views.md
+
+    stimulus:
+      description: "Stimulus.js controllers and Turbo integration specialist (importmap, no Node build)"
+      directory: ./app/javascript
+      model: sonnet
+      allowed_tools: [Read, Edit, Write, Bash, Grep, Glob, LS]
+      prompt_file: .claude-on-rails/prompts/stimulus.md
+
+    services:
+      description: "Service objects and domain/business logic specialist (imports, statement & balance calculations)"
+      directory: ./app/services
+      model: sonnet
+      allowed_tools: [Read, Edit, Write, Bash, Grep, Glob, LS]
+      prompt_file: .claude-on-rails/prompts/services.md
+
+    jobs:
+      description: "Background jobs and async processing specialist (Solid Queue, no Redis/Sidekiq)"
+      directory: ./app/jobs
+      model: sonnet
+      allowed_tools: [Read, Edit, Write, Bash, Grep, Glob, LS]
+      prompt_file: .claude-on-rails/prompts/jobs.md
+
+    tests:
+      description: "RSpec testing, FactoryBot factories, and FFaker fake data specialist"
+      directory: ./spec
+      model: sonnet
+      allowed_tools: [Read, Edit, Write, Bash, Grep, Glob, LS]
+      prompt_file: .claude-on-rails/prompts/tests.md
+
+    devops:
+      description: "Deployment (Kamal), CI, Docker, and production configuration specialist"
+      directory: [./config, ./.github, ./.kamal, ./docker]
+      model: sonnet
+      allowed_tools: [Read, Edit, Write, Bash, Grep, Glob, LS]
+      prompt_file: .claude-on-rails/prompts/devops.md
