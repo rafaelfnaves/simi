@@ -56,9 +56,10 @@ production:
   primary: &primary_production
     <<: *default
     database: simi_production
-    # Take the secret straight from the environment (Kamal) with no committed
-    # fallback — nil here surfaces as a connection error, never the dev default.
-    password: <%= ENV["DB_PASSWORD"] %>
+    # Require the secret from the environment (Kamal), no committed fallback.
+    # Only raise when actually booting production — `db:prepare` renders this
+    # whole file in every environment, so an unconditional fetch breaks CI.
+    password: <%= ENV.fetch("DB_PASSWORD") { raise "DB_PASSWORD is required in production" if Rails.env.production? } %>
   cache:
     <<: *primary_production
     database: simi_production_cache
