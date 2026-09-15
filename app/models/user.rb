@@ -4,6 +4,7 @@ class User < ApplicationRecord
   # Stored as IANA identifiers, not the friendlier Rails zone names, so the value
   # means the same thing outside Rails.
   TIME_ZONES = ActiveSupport::TimeZone::MAPPING.values.uniq.freeze
+  EMAIL_CONFIRMATION_EXPIRES_IN = 24.hours
 
   has_secure_password
   has_many :sessions, dependent: :destroy
@@ -17,7 +18,7 @@ class User < ApplicationRecord
   validates :theme, inclusion: { in: THEMES }
   validates :time_zone, inclusion: { in: TIME_ZONES }
 
-  generates_token_for :email_confirmation, expires_in: 24.hours do
+  generates_token_for :email_confirmation, expires_in: EMAIL_CONFIRMATION_EXPIRES_IN do
     email_address
   end
 

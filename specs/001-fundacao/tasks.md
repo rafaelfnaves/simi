@@ -98,15 +98,15 @@ com ela.
 
 ### Tests for User Story 2
 
-- [ ] T028 [P] [US2] Escrever `spec/requests/passwords_spec.rb`: pedido com e-mail existente envia o link; e-mail inexistente responde igual e não envia nada (FR-018); link válido redefine a senha; link expirado ou já usado é recusado; o link deixa de valer assim que a senha muda (FR-020)
-- [ ] T029 [P] [US2] Escrever `spec/mailers/passwords_mailer_spec.rb`: destinatário, assunto, presença do link e ausência de senha no corpo
+- [X] T028 [P] [US2] Escrever `spec/requests/passwords_spec.rb`: pedido com e-mail existente envia o link; e-mail inexistente responde igual e não envia nada (FR-018); link válido redefine a senha; link expirado ou já usado é recusado; o link deixa de valer assim que a senha muda (FR-020)
+- [X] T029 [P] [US2] Escrever `spec/mailers/passwords_mailer_spec.rb`: destinatário, assunto, presença do link e ausência de senha no corpo
 
 ### Implementation for User Story 2
 
-- [ ] T030 [US2] Ajustar `app/mailers/passwords_mailer.rb` para renderizar a parte HTML por Phlex e montar a parte texto como string, no mesmo padrão do `UserMailer`
-- [ ] T031 [P] [US2] Criar `app/views/mailers/passwords_mailer/reset.rb` com o corpo HTML do e-mail de redefinição
-- [ ] T032 [P] [US2] Criar `app/views/passwords/new.rb` com o formulário de solicitação
-- [ ] T033 [P] [US2] Criar `app/views/passwords/edit.rb` com o formulário de nova senha
+- [X] T030 [US2] Ajustar `app/mailers/passwords_mailer.rb` para renderizar a parte HTML por Phlex e montar a parte texto como string, no mesmo padrão do `UserMailer`
+- [X] T031 [P] [US2] Criar `app/views/mailers/passwords_mailer/reset.rb` com o corpo HTML do e-mail de redefinição
+- [X] T032 [P] [US2] Criar `app/views/passwords/new.rb` com o formulário de solicitação
+- [X] T033 [P] [US2] Criar `app/views/passwords/edit.rb` com o formulário de nova senha
 
 **Checkpoint**: quem perde a senha volta sozinho, e nenhuma resposta revela quais e-mails existem.
 
