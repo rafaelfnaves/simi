@@ -121,19 +121,19 @@ comportamento em 360 px.
 
 ### Tests for User Story 3
 
-- [ ] T034 [P] [US3] Escrever `spec/components/money_spec.rb`: formatação em Real brasileiro, incluindo zero e valores negativos (FR-024)
-- [ ] T035 [P] [US3] Escrever `spec/components/main_nav_spec.rb`: as seis áreas aparecem, a atual é destacada e as da Fase 2 são marcadas como indisponíveis e não clicáveis (FR-021)
-- [ ] T036 [P] [US3] Escrever `spec/components/stat_card_spec.rb`: rótulo e valor renderizados
-- [ ] T037 [US3] Estender `spec/requests/dashboard_spec.rb` para exigir os sete blocos e seus estados vazios, sem valores fictícios (FR-022, FR-023)
+- [X] T034 [P] [US3] Escrever `spec/components/money_spec.rb`: formatação em Real brasileiro, incluindo zero e valores negativos (FR-024)
+- [X] T035 [P] [US3] Escrever `spec/components/main_nav_spec.rb`: as seis áreas aparecem, a atual é destacada e as da Fase 2 são marcadas como indisponíveis e não clicáveis (FR-021)
+- [X] T036 [P] [US3] Escrever `spec/components/stat_card_spec.rb`: rótulo e valor renderizados
+- [X] T037 [US3] Estender `spec/requests/dashboard_spec.rb` para exigir os sete blocos e seus estados vazios, sem valores fictícios (FR-022, FR-023)
 
 ### Implementation for User Story 3
 
-- [ ] T038 [P] [US3] Criar `app/components/money.rb` como o único ponto de formatação monetária do produto
-- [ ] T039 [P] [US3] Criar `app/components/page_header.rb` com título e espaço para ações
-- [ ] T040 [P] [US3] Criar `app/components/stat_card.rb` sobre `RubyUI::Card`
-- [ ] T041 [US3] Criar `app/components/main_nav.rb` sobre os componentes `RubyUI::Sidebar`, com as seis áreas e a marcação de indisponível
-- [ ] T042 [US3] Ampliar `app/components/app_shell.rb` para a moldura definitiva: barra lateral colapsável, versão em `Sheet` no celular, topbar com gatilho, menu do usuário e alternador de tema
-- [ ] T043 [US3] Montar os sete blocos em `app/views/dashboard/show.rb`, usando `Components::StatCard` nas três métricas e `RubyUI::Empty` nos quatro blocos restantes, na ordem definida em [contracts/routes.md](./contracts/routes.md)
+- [X] T038 [P] [US3] Criar `app/components/money.rb` como o único ponto de formatação monetária do produto
+- [X] T039 [P] [US3] Criar `app/components/page_header.rb` com título e espaço para ações
+- [X] T040 [P] [US3] Criar `app/components/stat_card.rb` sobre `RubyUI::Card`
+- [X] T041 [US3] Criar `app/components/main_nav.rb` sobre os componentes `RubyUI::Sidebar`, com as seis áreas e a marcação de indisponível
+- [X] T042 [US3] Ampliar `app/components/app_shell.rb` para a moldura definitiva: barra lateral colapsável, versão em `Sheet` no celular, topbar com gatilho, menu do usuário e alternador de tema
+- [X] T043 [US3] Montar os sete blocos em `app/views/dashboard/show.rb`, usando `Components::StatCard` nas três métricas e `RubyUI::Empty` nos quatro blocos restantes, na ordem definida em [contracts/routes.md](./contracts/routes.md)
 
 **Checkpoint**: a casca do produto está de pé e a Fase 2 só precisará trocar a fonte de dados.
 
