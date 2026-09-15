@@ -118,21 +118,15 @@ RSpec.describe User do
   end
 
   describe ".signup_allowed?" do
-    around do |example|
-      original = ENV["SIMI_ALLOWED_SIGNUP_EMAILS"]
-      example.run
-      ENV["SIMI_ALLOWED_SIGNUP_EMAILS"] = original
-    end
-
     it "accepts an address on the list, however it is typed" do
-      ENV["SIMI_ALLOWED_SIGNUP_EMAILS"] = "maria@exemplo.com, joao@exemplo.com"
+      allow_signups_from("maria@exemplo.com", "joao@exemplo.com")
 
       expect(User).to be_signup_allowed(" MARIA@Exemplo.com ")
       expect(User).to be_signup_allowed("joao@exemplo.com")
     end
 
     it "refuses an address that is not on the list" do
-      ENV["SIMI_ALLOWED_SIGNUP_EMAILS"] = "maria@exemplo.com"
+      allow_signups_from("maria@exemplo.com")
 
       expect(User).not_to be_signup_allowed("intruso@exemplo.com")
     end
@@ -151,7 +145,7 @@ RSpec.describe User do
     end
 
     it "refuses a blank address" do
-      ENV["SIMI_ALLOWED_SIGNUP_EMAILS"] = "maria@exemplo.com"
+      allow_signups_from("maria@exemplo.com")
 
       expect(User).not_to be_signup_allowed(nil)
       expect(User).not_to be_signup_allowed("  ")

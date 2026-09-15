@@ -69,21 +69,21 @@ nenhuma outra história.
 
 ### Tests for User Story 1
 
-- [ ] T016 [P] [US1] Escrever `spec/requests/registrations_spec.rb`: cadastro aceito cria a conta e enfileira o e-mail; e-mail fora da lista autorizada não cria conta, não envia e-mail e responde igual ao caso de sucesso; e-mail já cadastrado não duplica nem revela a existência (FR-009a)
-- [ ] T017 [P] [US1] Escrever `spec/requests/confirmations_spec.rb`: link válido confirma e abre sessão; link expirado é recusado; link já usado não altera a conta; o reenvio responde de forma genérica
-- [ ] T018 [P] [US1] Escrever `spec/requests/sessions_spec.rb`: entrada com credenciais corretas; senha errada com mensagem que não revela o e-mail; conta não confirmada não abre sessão (FR-008); saída encerra a sessão; retorno ao endereço originalmente pedido (FR-016)
-- [ ] T019 [P] [US1] Escrever `spec/mailers/user_mailer_spec.rb`: destinatário, assunto, presença do link de confirmação, existência das partes HTML e texto, e ausência de senha no corpo (FR-035)
+- [X] T016 [P] [US1] Escrever `spec/requests/registrations_spec.rb`: cadastro aceito cria a conta e enfileira o e-mail; e-mail fora da lista autorizada não cria conta, não envia e-mail e responde igual ao caso de sucesso; e-mail já cadastrado não duplica nem revela a existência (FR-009a)
+- [X] T017 [P] [US1] Escrever `spec/requests/confirmations_spec.rb`: link válido confirma e abre sessão; link expirado é recusado; link já usado não altera a conta; o reenvio responde de forma genérica
+- [X] T018 [P] [US1] Escrever `spec/requests/sessions_spec.rb`: entrada com credenciais corretas; senha errada com mensagem que não revela o e-mail; conta não confirmada não abre sessão (FR-008); saída encerra a sessão; retorno ao endereço originalmente pedido (FR-016)
+- [X] T019 [P] [US1] Escrever `spec/mailers/user_mailer_spec.rb`: destinatário, assunto, presença do link de confirmação, existência das partes HTML e texto, e ausência de senha no corpo (FR-035)
 
 ### Implementation for User Story 1
 
-- [ ] T020 [US1] Criar `app/mailers/user_mailer.rb` com `#confirmation`, montando a parte HTML por classe Phlex e a parte texto como string Ruby, sem template (`research.md` R3)
-- [ ] T021 [P] [US1] Criar `app/views/mailers/user_mailer/confirmation.rb` com o corpo HTML do e-mail de confirmação
-- [ ] T022 [US1] Criar `app/controllers/registrations_controller.rb` com `#new` e `#create`, `allow_unauthenticated_access`, `params.expect`, e a resposta indistinguível para e-mail já cadastrado ou fora da lista
-- [ ] T023 [P] [US1] Criar `app/views/registrations/new.rb` sobre `Views::AuthBase`, com `RubyUI::Form` e `RubyUI::Input`
-- [ ] T024 [US1] Criar `app/controllers/confirmations_controller.rb` com `#show`, `#new` e `#create`, consumindo `User.find_by_token_for(:email_confirmation, ...)`, marcando `confirmed_at` e abrindo a sessão
-- [ ] T025 [P] [US1] Criar `app/views/confirmations/new.rb` com o formulário de reenvio do link
-- [ ] T026 [US1] Estender `app/controllers/sessions_controller.rb` para recusar contas não confirmadas, direcionando ao reenvio, e criar `app/views/sessions/new.rb`
-- [ ] T027 [US1] Criar `app/components/user_menu.rb` sobre `RubyUI::DropdownMenu` e `RubyUI::Avatar`, com o nome da pessoa, o acesso ao perfil e a saída, e ligá-lo ao `app/components/app_shell.rb`
+- [X] T020 [US1] Criar `app/mailers/user_mailer.rb` com `#confirmation`, montando a parte HTML por classe Phlex e a parte texto como string Ruby, sem template (`research.md` R3)
+- [X] T021 [P] [US1] Criar `app/views/mailers/user_mailer/confirmation.rb` com o corpo HTML do e-mail de confirmação
+- [X] T022 [US1] Criar `app/controllers/registrations_controller.rb` com `#new` e `#create`, `allow_unauthenticated_access`, `params.expect`, e a resposta indistinguível para e-mail já cadastrado ou fora da lista
+- [X] T023 [P] [US1] Criar `app/views/registrations/new.rb` sobre `Views::AuthBase`, com `RubyUI::Form` e `RubyUI::Input`
+- [X] T024 [US1] Criar `app/controllers/confirmations_controller.rb` com `#show`, `#new` e `#create`, consumindo `User.find_by_token_for(:email_confirmation, ...)`, marcando `confirmed_at` e abrindo a sessão
+- [X] T025 [P] [US1] Criar `app/views/confirmations/new.rb` com o formulário de reenvio do link
+- [X] T026 [US1] Estender `app/controllers/sessions_controller.rb` para recusar contas não confirmadas, direcionando ao reenvio, e criar `app/views/sessions/new.rb`
+- [X] T027 [US1] Criar `app/components/user_menu.rb` sobre `RubyUI::DropdownMenu` e `RubyUI::Avatar`, com o nome da pessoa, o acesso ao perfil e a saída, e ligá-lo ao `app/components/app_shell.rb`
 
 **Checkpoint**: o fluxo completo de acesso funciona de ponta a ponta e a suíte está verde.
 
