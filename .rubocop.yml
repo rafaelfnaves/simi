@@ -1,6 +1,13 @@
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
+# app/components/ruby_ui holds components copied in verbatim by
+# `bin/rails generate ruby_ui:component`. They follow RubyUI's own style, and
+# reformatting them would be undone by the next generator run.
+AllCops:
+  Exclude:
+    - app/components/ruby_ui/**/*
+
 # Overwrite or add rules to create your own house style
 #
 # # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`

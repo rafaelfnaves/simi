@@ -34,10 +34,10 @@ componentes em `app/components/**/*.rb`, conforme `plan.md`.
 
 **Purpose**: trazer para o projeto o que o framework e a biblioteca de componentes já entregam.
 
-- [ ] T001 Rodar `bin/rails generate authentication --no-template-engine` e conferir que nenhuma view foi criada em `app/views/sessions/` ou `app/views/passwords/`, que `bcrypt` foi descomentado no `Gemfile`, que `include Authentication` entrou em `app/controllers/application_controller.rb` e que as duas migrations nasceram em `db/migrate/`
-- [ ] T002 Remover `app/views/passwords_mailer/reset.html.erb` e `app/views/passwords_mailer/reset.text.erb` — serão reescritos em Phlex na US2 (Princípio II)
-- [ ] T003 Instalar os componentes do RubyUI com `bin/rails generate ruby_ui:component Button Input Form Card Avatar DropdownMenu Sheet Sidebar Separator Alert Badge Table Typography Link Select Empty ThemeToggle Tooltip` e conferir em `config/importmap.rb` se algum pin novo foi adicionado
-- [ ] T004 [P] Declarar `SIMI_ALLOWED_SIGNUP_EMAILS` em `.env.example` e no `.env` local, com o endereço que será usado na validação manual
+- [X] T001 Rodar `bin/rails generate authentication --no-template-engine` e conferir que nenhuma view foi criada em `app/views/sessions/` ou `app/views/passwords/`, que `bcrypt` foi descomentado no `Gemfile`, que `include Authentication` entrou em `app/controllers/application_controller.rb` e que as duas migrations nasceram em `db/migrate/`
+- [X] T002 Remover `app/views/passwords_mailer/reset.html.erb` e `app/views/passwords_mailer/reset.text.erb` — serão reescritos em Phlex na US2 (Princípio II)
+- [X] T003 Instalar os componentes do RubyUI com `bin/rails generate ruby_ui:component Button Input Form Card Avatar DropdownMenu Sheet Sidebar Separator Alert Badge Table Typography Link Select Empty ThemeToggle Tooltip` e conferir em `config/importmap.rb` se algum pin novo foi adicionado
+- [X] T004 [P] Declarar `SIMI_ALLOWED_SIGNUP_EMAILS` em `.env.example` e no `.env` local, com o endereço que será usado na validação manual
 
 ---
 
