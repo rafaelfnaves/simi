@@ -36,7 +36,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { address: "mailpit", port: 1025 }
+  config.action_mailer.smtp_settings = { address: ENV.fetch("SMTP_HOST", "localhost"), port: ENV.fetch("SMTP_PORT", 1025).to_i }
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

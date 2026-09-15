@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:18-alpine
+    image: pgvector/pgvector:pg18
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USERNAME:-simi}
@@ -9,7 +9,7 @@ services:
     ports:
       - "${DB_PORT:-5454}:5432"
     volumes:
-      - simi_postgres_data:/var/lib/postgresql/data
+      - simi_postgres_data:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-simi} -d simi_development"]
       interval: 5s
