@@ -46,17 +46,17 @@ componentes em `app/components/**/*.rb`, conforme `plan.md`.
 **Purpose**: esquema, modelo, rotas e a moldura mínima das páginas. Nenhuma história pode começar
 antes disto.
 
-- [ ] T005 Criar a migration `AddProfileFieldsToUsers` em `db/migrate/` com `name` (não nulo), `confirmed_at`, `theme` (não nulo, padrão `"system"`), `time_zone` (não nulo, padrão `"America/Sao_Paulo"`) e `locale` (não nulo, padrão `"pt-BR"`), conforme [data-model.md](./data-model.md)
-- [ ] T006 Estender `app/models/user.rb` com a validação de `name`, o mínimo de 8 caracteres na senha, a restrição de `theme` aos três valores, a validação de `time_zone`, `generates_token_for :email_confirmation, expires_in: 24.hours`, o predicado `confirmed?` e o método de classe que consulta `SIMI_ALLOWED_SIGNUP_EMAILS` via `ENV.fetch` com padrão (Princípio V)
-- [ ] T007 [P] Escrever a factory em `spec/factories/users.rb` usando **FFaker**, com trait `:unconfirmed`
-- [ ] T008 [P] Cobrir `app/models/user.rb` em `spec/models/user_spec.rb`: normalização e unicidade do e-mail, política de senha, valores aceitos de `theme`, geração e expiração do token de confirmação, e a lista de autorizados — incluindo o caso de lista vazia recusando todo cadastro
-- [ ] T009 Escrever a tabela de rotas de `config/routes.rb` conforme [contracts/routes.md](./contracts/routes.md), com `root "dashboard#show"`, mantendo as duas rotas inseridas pelo generator
-- [ ] T010 Reduzir `app/views/layouts/application.html.erb` ao esqueleto: `<body>` com apenas `yield`, classe de tema no `<html>` a partir da preferência da conta, e o script curto no `<head>` que resolve `prefers-color-scheme` quando a preferência é `system` (FR-030)
-- [ ] T011 [P] Criar `app/components/flash_messages.rb` sobre `RubyUI::Alert`, exibindo `notice` e `alert`
-- [ ] T012 Criar `app/components/auth_shell.rb` (moldura centrada, sem navegação) e `app/views/auth_base.rb` com o `around_template` correspondente
-- [ ] T013 Criar `app/components/app_shell.rb` com a estrutura mínima autenticada e ajustar `app/views/base.rb` para envolvê-la em `around_template` — a navegação completa chega na US3
-- [ ] T014 Criar `app/controllers/dashboard_controller.rb` com `#show` e `app/views/dashboard/show.rb` como página autenticada mínima — os sete blocos chegam na US3
-- [ ] T015 [P] Cobrir o acesso protegido em `spec/requests/dashboard_spec.rb`: sem sessão redireciona para a entrada, com sessão responde `200`
+- [X] T005 Criar a migration `AddProfileFieldsToUsers` em `db/migrate/` com `name` (não nulo), `confirmed_at`, `theme` (não nulo, padrão `"system"`), `time_zone` (não nulo, padrão `"America/Sao_Paulo"`) e `locale` (não nulo, padrão `"pt-BR"`), conforme [data-model.md](./data-model.md)
+- [X] T006 Estender `app/models/user.rb` com a validação de `name`, o mínimo de 8 caracteres na senha, a restrição de `theme` aos três valores, a validação de `time_zone`, `generates_token_for :email_confirmation, expires_in: 24.hours`, o predicado `confirmed?` e o método de classe que consulta `SIMI_ALLOWED_SIGNUP_EMAILS` via `ENV.fetch` com padrão (Princípio V)
+- [X] T007 [P] Escrever a factory em `spec/factories/users.rb` usando **FFaker**, com trait `:unconfirmed`
+- [X] T008 [P] Cobrir `app/models/user.rb` em `spec/models/user_spec.rb`: normalização e unicidade do e-mail, política de senha, valores aceitos de `theme`, geração e expiração do token de confirmação, e a lista de autorizados — incluindo o caso de lista vazia recusando todo cadastro
+- [X] T009 Escrever a tabela de rotas de `config/routes.rb` conforme [contracts/routes.md](./contracts/routes.md), com `root "dashboard#show"`, mantendo as duas rotas inseridas pelo generator
+- [X] T010 Reduzir `app/views/layouts/application.html.erb` ao esqueleto: `<body>` com apenas `yield`, classe de tema no `<html>` a partir da preferência da conta, e o script curto no `<head>` que resolve `prefers-color-scheme` quando a preferência é `system` (FR-030)
+- [X] T011 [P] Criar `app/components/flash_messages.rb` sobre `RubyUI::Alert`, exibindo `notice` e `alert`
+- [X] T012 Criar `app/components/auth_shell.rb` (moldura centrada, sem navegação) e `app/views/auth_base.rb` com o `around_template` correspondente
+- [X] T013 Criar `app/components/app_shell.rb` com a estrutura mínima autenticada e ajustar `app/views/base.rb` para envolvê-la em `around_template` — a navegação completa chega na US3
+- [X] T014 Criar `app/controllers/dashboard_controller.rb` com `#show` e `app/views/dashboard/show.rb` como página autenticada mínima — os sete blocos chegam na US3
+- [X] T015 [P] Cobrir o acesso protegido em `spec/requests/dashboard_spec.rb`: sem sessão redireciona para a entrada, com sessão responde `200`
 
 ---
 
