@@ -41,6 +41,9 @@
 # RSpec persisted example statuses (--only-failures).
 /spec/examples.txt
 
+# Spec Kit script bytecode.
+__pycache__/
+
 # ClaudeOnRails
 .claude-on-rails/sessions/
 .claude-swarm/
