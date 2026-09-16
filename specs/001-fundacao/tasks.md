@@ -148,14 +148,14 @@ as preferências acompanharam a conta.
 
 ### Tests for User Story 4
 
-- [ ] T044 [P] [US4] Escrever `spec/requests/settings_spec.rb`: o perfil edita apenas `Current.user` e nunca aceita um id vindo do navegador (FR-034); nome e fuso são salvos; `email_address` é rejeitado como parâmetro; a troca de tema persiste na conta e os três valores são aceitos
+- [X] T044 [P] [US4] Escrever `spec/requests/settings_spec.rb`: o perfil edita apenas `Current.user` e nunca aceita um id vindo do navegador (FR-034); nome e fuso são salvos; `email_address` é rejeitado como parâmetro; a troca de tema persiste na conta e os três valores são aceitos
 
 ### Implementation for User Story 4
 
-- [ ] T045 [US4] Criar `app/controllers/settings/profiles_controller.rb` com `#show` e `#update`, operando sobre `Current.user` e com `params.expect` restrito a nome, fuso e tema
-- [ ] T046 [P] [US4] Criar `app/views/settings/profiles/show.rb` com o formulário de perfil, o e-mail apenas em leitura e o caminho para a troca de senha
-- [ ] T047 [US4] Criar `app/controllers/settings/themes_controller.rb` com `#update`, persistindo a preferência e voltando à página de origem
-- [ ] T048 [US4] Criar `app/components/theme_switcher.rb` reaproveitando `RubyUI::ThemeToggle` como gatilho e enviando a mudança ao servidor, e `app/javascript/controllers/theme_controller.js` para virar a classe do `<html>` na hora (`research.md` R7)
+- [X] T045 [US4] Criar `app/controllers/settings/profiles_controller.rb` com `#show` e `#update`, operando sobre `Current.user` e com `params.expect` restrito a nome, fuso e tema
+- [X] T046 [P] [US4] Criar `app/views/settings/profiles/show.rb` com o formulário de perfil, o e-mail apenas em leitura e o caminho para a troca de senha
+- [X] T047 [US4] Criar `app/controllers/settings/themes_controller.rb` com `#update`, persistindo a preferência e voltando à página de origem
+- [X] T048 [US4] Criar `app/components/theme_switcher.rb` reaproveitando `RubyUI::ThemeToggle` como gatilho e enviando a mudança ao servidor, e `app/javascript/controllers/theme_controller.js` para virar a classe do `<html>` na hora (`research.md` R7)
 
 **Checkpoint**: as quatro histórias da spec estão entregues.
 
@@ -163,12 +163,12 @@ as preferências acompanharam a conta.
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T049 Rodar `bin/rubocop -a` e revisar o que a correção automática mudou
-- [ ] T050 Rodar `bin/brakeman` e corrigir cada achado, sem suprimir (Princípio VI)
-- [ ] T051 Conferir que nenhum `.erb` existe fora de `app/views/layouts/` e que nenhum controller usa `User.find(params[:id])`
-- [ ] T052 Executar `bin/ci` inteiro e exigir verde
-- [ ] T053 Percorrer os onze passos da validação manual em [quickstart.md](./quickstart.md), incluindo a checagem em 360 px e a inspeção do `log/development.log`
-- [ ] T054 Documentar em `.env.example` e no `README.md` a variável `SIMI_ALLOWED_SIGNUP_EMAILS` e o que acontece quando ela está vazia
+- [X] T049 Rodar `bin/rubocop -a` e revisar o que a correção automática mudou
+- [X] T050 Rodar `bin/brakeman` e corrigir cada achado, sem suprimir (Princípio VI)
+- [X] T051 Conferir que nenhum `.erb` existe fora de `app/views/layouts/` e que nenhum controller usa `User.find(params[:id])`
+- [X] T052 Executar `bin/ci` inteiro e exigir verde
+- [X] T053 Percorrer os onze passos da validação manual em [quickstart.md](./quickstart.md), incluindo a checagem em 360 px e a inspeção do `log/development.log`
+- [X] T054 Documentar em `.env.example` e no `README.md` a variável `SIMI_ALLOWED_SIGNUP_EMAILS` e o que acontece quando ela está vazia
 
 ---
 
