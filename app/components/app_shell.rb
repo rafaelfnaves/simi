@@ -14,6 +14,7 @@ class Components::AppShell < Components::Base
         header(class: "flex h-14 items-center gap-2 border-b px-4") do
           RubyUI.SidebarTrigger(class: "md:hidden")
           div(class: "ml-auto flex items-center gap-2") do
+            render Components::ThemeSwitcher.new(theme: Current.user.theme)
             render Components::UserMenu.new
           end
         end

@@ -45,6 +45,14 @@ RSpec.describe "Dashboard" do
       expect(response.body).to include("Sair")
     end
 
+    it "offers the theme switch from the topbar" do
+      get root_path
+      body = Nokogiri::HTML5(response.body)
+
+      expect(body.at_css("form[action='/settings/theme']")).to be_present
+      expect(body.at_css("[aria-label='Alternar tema']")).to be_present
+    end
+
     it "offers the navigation to every area" do
       get root_path
 
