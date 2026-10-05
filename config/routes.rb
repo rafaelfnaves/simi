@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   resources :passwords, param: :token, only: %i[ new create edit update ]
   resources :confirmations, param: :token, only: %i[ new create show ]
 
+  resources :accounts, except: :show do
+    resource :archive, only: %i[ create destroy ], module: :accounts
+  end
+
   namespace :settings do
     resource :profile, only: %i[ show update ]
     resource :theme, only: :update
