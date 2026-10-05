@@ -10,6 +10,15 @@ Rails.application.routes.draw do
     resource :archive, only: %i[ create destroy ], module: :accounts
   end
 
+  # Declared before the collection so that nothing competes with /categories/:id.
+  namespace :categories do
+    resource :suggestions, only: :create
+  end
+
+  resources :categories, except: :show do
+    resource :archive, only: %i[ create destroy ], module: :categories
+  end
+
   namespace :settings do
     resource :profile, only: %i[ show update ]
     resource :theme, only: :update
