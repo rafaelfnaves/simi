@@ -95,7 +95,7 @@ app/
 ├── models/
 │   ├── account.rb                       # raiz STI: user, name, institution, balance, archived_at
 │   ├── accounts/
-│   │   ├── deposit.rb                   # guarda dinheiro; soma no patrimônio
+│   │   ├── deposit.rb                   # guarda dinheiro; TYPES lista as folhas (research D7)
 │   │   ├── checking.rb                  # conta corrente
 │   │   ├── savings.rb                   # poupança
 │   │   ├── wallet.rb                    # carteira digital
@@ -116,6 +116,9 @@ app/
 ├── components/
 │   ├── icon.rb                          # catálogo fixo de SVGs inline
 │   ├── category_badge.rb                # cor + ícone + nome, reusável na Fase 2
+│   ├── select_field.rb                  # o par de Field para listas fechadas
+│   ├── account_form.rb                  # compartilhado por new e edit
+│   ├── category_form.rb                 # idem, sem natureza nem mãe na edição
 │   ├── money.rb                         # ganha tone: para destacar negativo (FR-027)
 │   ├── stat_card.rb                     # ganha estado vazio quando amount é nil (FR-026)
 │   └── main_nav.rb                      # Contas e Categorias deixam de ser "Em breve"

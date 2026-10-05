@@ -29,6 +29,18 @@ RSpec.describe "Data privacy configuration" do
       expect(filtered.values).to all(eq("[FILTERED]"))
     end
 
+    it "redacts a whole account form, name and institution included" do
+      filtered = filter.filter("account" => { "name" => "Itaú", "institution" => "Itaú Unibanco", "balance" => "1.234,56" })
+
+      expect(filtered["account"]).to eq("[FILTERED]")
+    end
+
+    it "redacts a category form, whose names describe how the person spends" do
+      filtered = filter.filter("category" => { "name" => "Terapia", "nature" => "expense" })
+
+      expect(filtered["category"]).to eq("[FILTERED]")
+    end
+
     it "leaves harmless parameters alone" do
       expect(filter.filter("page" => "2", "theme" => "dark")).to eq("page" => "2", "theme" => "dark")
     end

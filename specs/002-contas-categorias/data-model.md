@@ -70,9 +70,11 @@ mesmo saldo que tinha.
 
 **Saldo consolidado**
 
-Valor derivado, nunca armazenado: `Accounts::Deposit.active.sum(:balance)` escopado pelo usuário. Um
-`SUM` agregado, não um `map` sobre registros carregados. Linhas de crédito ficam fora da soma por
-construção — a query parte de `Deposit` e não precisa saber que cartão existe (FR-031a).
+Valor derivado, nunca armazenado: `Current.user.accounts.deposits.active.sum(:balance)`. Um `SUM`
+agregado, não um `map` sobre registros carregados. Linhas de crédito ficam fora da soma por
+construção — o scope parte da lista de tipos de depósito e não precisa saber que cartão existe
+(FR-031a). O scope enumera as folhas em vez de confiar em `descendants`; o porquê está em
+[research.md](./research.md) D7.
 
 ---
 
@@ -94,8 +96,9 @@ construção — a query parte de `Deposit` e não precisa saber que cartão exi
 
 - `(user_id, nature, archived_at)` — a listagem separa por natureza e esconde arquivadas.
 - `(parent_id)` — FK, e a árvore é lida por ele.
-- `(user_id, parent_id, lower(name))` **único e parcial**, `WHERE archived_at IS NULL`, com
-  `nulls_not_distinct: true`. O `NULLS NOT DISTINCT` é indispensável: categoria raiz tem `parent_id`
+- `(user_id, parent_id, nature, lower(name))` **único e parcial**, `WHERE archived_at IS NULL`, com
+  `nulls_not_distinct: true`. A natureza entra no índice porque FR-018 proíbe irmãs homônimas **de
+  mesma natureza** — "Investimentos" pode existir como despesa e como receita. O `NULLS NOT DISTINCT` é indispensável: categoria raiz tem `parent_id`
   nulo e, sem ele, o Postgres trataria cada nulo como distinto e deixaria passar duas raízes
   homônimas (research D6).
 
@@ -115,8 +118,11 @@ construção — a query parte de `Deposit` e não precisa saber que cartão exi
   enquanto a categoria não tem uso.
 - Arquivar uma categoria arquiva suas subcategorias, na mesma transação (FR-021). Não restam ramos
   órfãos.
-- A exclusão definitiva exige nenhuma subcategoria viva e nenhum registro classificado (FR-022). A
-  segunda metade, como nas contas, só ganha efeito com a feature 003.
+- A exclusão definitiva exige **nenhuma subcategoria, arquivada ou não**, e nenhum registro
+  classificado (FR-022). É mais estrito do que a letra do FR, que fala em subcategoria "viva":
+  apagar uma raiz levaria junto, por cascata da FK, as filhas que a pessoa havia arquivado — e dado
+  financeiro arquivado não se perde em silêncio. A segunda metade, como nas contas, só ganha efeito
+  com a feature 003.
 - Categoria arquivada continua legível no histórico e deixa de ser oferecida para novas
   classificações (FR-023).
 

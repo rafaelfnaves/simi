@@ -8,5 +8,8 @@
 # transaction amounts, descriptions and account identifiers from reaching any log.
 Rails.application.config.filter_parameters += [
   :passw, :email, :secret, :token, :_key, :crypt, :salt, :certificate, :otp, :ssn, :cvv, :cvc,
-  :amount, :balance, :description, :notes, :account, :agency, :iban, :pix, :card, :statement
+  :amount, :balance, :description, :notes, :account, :agency, :iban, :pix, :card, :statement,
+  # A category name describes how someone spends — "Terapia", "Advogado" — which is
+  # the same class of fact as the amount beside it.
+  :category
 ]

@@ -166,8 +166,9 @@ constante autoloaded no boot.
 
 ## D5 — Ícones inline e paleta como classes literais
 
-**Decisão**: um `Components::Icon` com catálogo fixo de SVGs inline (traçados do Lucide, o mesmo
-vocabulário visual dos componentes RubyUI já vendorizados) e uma paleta fixa de cores expressa como
+**Decisão**: um `Components::Icon` com catálogo fixo de SVGs inline, desenhados aqui na mesma
+convenção dos componentes RubyUI já vendorizados (caixa 24×24, traço de 2px com pontas
+arredondadas, `currentColor`) e uma paleta fixa de cores expressa como
 **classes utilitárias literais** em um mapa de constante Ruby — nunca nome de classe interpolado.
 
 **Rationale**: zero gem nova (Princípio V), e é o que os componentes RubyUI do projeto já fazem —
@@ -202,3 +203,34 @@ cada nulo distinto, deixando passar duas raízes homônimas.
 - Boolean `archived`: perde a informação de *quando*, que o histórico financeiro vai querer.
 - Gem de soft delete (`discard`, `paranoia`): dependência nova para duas colunas e dois scopes.
 - Unicidade só na validação: passa em teste e falha em produção com dois envios simultâneos.
+
+---
+
+## D7 — O conjunto de depósitos é listado, não derivado de `descendants`
+
+**Decisão**: `Accounts::Deposit::TYPES` enumera as quatro folhas, e `Account.deposits` filtra por essa
+lista. O saldo consolidado é `Current.user.accounts.deposits.active.sum(:balance)`.
+
+**Rationale**: descoberto durante a implementação, inspecionando o SQL gerado. A condição de STI de
+uma classe intermediária é montada a partir de `descendants`, e fora do eager loading o Zeitwerk ainda
+não carregou as folhas:
+
+```sql
+-- com as folhas não carregadas (desenvolvimento, e teste local)
+SELECT ... WHERE "accounts"."type" = 'Accounts::Deposit'          -- não casa com nada
+-- com as folhas carregadas (CI, onde eager_load é ligado)
+SELECT ... WHERE "accounts"."type" IN ('Accounts::Deposit', 'Accounts::Cash', ...)
+```
+
+`config.eager_load` é `false` em desenvolvimento e, em teste, só é ligado quando `ENV["CI"]` está
+presente. Ou seja: a versão ingênua passaria na esteira e perderia **todos** os saldos na máquina de
+quem desenvolve — a pior categoria de bug, o que só aparece fora do lugar onde se testa.
+
+**Alternativas consideradas**: forçar o carregamento das folhas em algum lugar (frágil, e invisível
+para quem lê); sobrescrever `sti_names` (depende de método interno do Active Record); ligar
+`eager_load` em desenvolvimento (atrasa cada boot para contornar um sintoma).
+
+**Consequência**: quando a feature 003 acrescentar `Accounts::CreditCard` a `Account::KINDS`, o
+exemplo `"covers every kind the product offers"` em `spec/models/account_spec.rb` fica vermelho de
+propósito. Ele existe para forçar a decisão explícita de que uma linha de crédito **não** entra em
+`TYPES` e, portanto, não soma no saldo consolidado (FR-031a).

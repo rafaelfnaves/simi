@@ -19,16 +19,16 @@ Todas exigem autenticação: nenhuma recebe `allow_unauthenticated_access`.
 | `GET` | `/accounts/:id/edit` | `accounts#edit` | formulário de edição | `404` se não for da pessoa |
 | `PATCH` | `/accounts/:id` | `accounts#update` | `/accounts` com aviso | reexibe o formulário, `422` |
 | `DELETE` | `/accounts/:id` | `accounts#destroy` | `/accounts` com aviso | `/accounts` com alerta sugerindo arquivar |
-| `POST` | `/accounts/:id/archive` | `accounts/archives#create` | `/accounts` com aviso | — |
-| `DELETE` | `/accounts/:id/archive` | `accounts/archives#destroy` | `/accounts` com aviso | — |
+| `POST` | `/accounts/:account_id/archive` | `accounts/archives#create` | `/accounts` com aviso | — |
+| `DELETE` | `/accounts/:account_id/archive` | `accounts/archives#destroy` | `/accounts` com aviso | — |
 | `GET` | `/categories` | `categories#index` | árvore separada por natureza; estado vazio com a oferta do conjunto sugerido | — |
 | `GET` | `/categories/new` | `categories#new` | formulário de cadastro | — |
 | `POST` | `/categories` | `categories#create` | `/categories` com aviso | reexibe o formulário, `422` |
 | `GET` | `/categories/:id/edit` | `categories#edit` | formulário de edição | `404` se não for da pessoa |
 | `PATCH` | `/categories/:id` | `categories#update` | `/categories` com aviso | reexibe o formulário, `422` |
 | `DELETE` | `/categories/:id` | `categories#destroy` | `/categories` com aviso | `/categories` com alerta sugerindo arquivar |
-| `POST` | `/categories/:id/archive` | `categories/archives#create` | `/categories` com aviso; subcategorias arquivadas junto | — |
-| `DELETE` | `/categories/:id/archive` | `categories/archives#destroy` | `/categories` com aviso | — |
+| `POST` | `/categories/:category_id/archive` | `categories/archives#create` | `/categories` com aviso; subcategorias arquivadas junto | — |
+| `DELETE` | `/categories/:category_id/archive` | `categories/archives#destroy` | `/categories` com aviso | — |
 | `POST` | `/categories/suggestions` | `categories/suggestions#create` | `/categories` com as sugeridas criadas | `/categories` sem duplicar nada |
 
 Arquivamento é uma **subrota própria**, não um `PATCH` com um campo escondido no formulário: arquivar
