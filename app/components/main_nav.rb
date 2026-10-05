@@ -21,9 +21,9 @@ class Components::MainNav < Components::Base
     [
       Item.new("Dashboard", root_path),
       Item.new("Transações", nil),
-      Item.new("Contas", nil),
+      Item.new("Contas", accounts_path),
       Item.new("Cartões", nil),
-      Item.new("Categorias", nil),
+      Item.new("Categorias", categories_path),
       Item.new("Configurações", settings_profile_path)
     ]
   end
@@ -37,7 +37,7 @@ class Components::MainNav < Components::Base
       else
         RubyUI.SidebarMenuButton(as: :span, aria_disabled: "true", class: "cursor-not-allowed opacity-50") do
           span { item.label }
-          RubyUI.Badge(variant: :secondary, class: "ml-auto") { "Em breve" }
+          RubyUI.Badge(variant: :outline, size: :sm, class: "ml-auto") { "Em breve" }
         end
       end
     end

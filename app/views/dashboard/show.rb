@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class Views::Dashboard::Show < Views::Base
+  # @param consolidated_balance [BigDecimal, nil] nil while no account holds money
+  def initialize(consolidated_balance: nil)
+    @consolidated_balance = consolidated_balance
+  end
+
   def view_template
     render Components::PageHeader.new(
       title: "Dashboard",
@@ -20,10 +25,19 @@ class Views::Dashboard::Show < Views::Base
 
   def metrics
     [
-      { label: "Saldo consolidado", amount: 0, hint: "Cadastre suas contas para ver o saldo." },
+      { label: "Saldo consolidado", amount: @consolidated_balance, tone: :signed,
+        hint: consolidated_hint },
       { label: "Receitas do mês", amount: 0, hint: "Nenhuma receita registrada neste mês." },
       { label: "Despesas do mês", amount: 0, hint: "Nenhuma despesa registrada neste mês." }
     ]
+  end
+
+  def consolidated_hint
+    if @consolidated_balance.nil?
+      "Cadastre suas contas para ver o saldo."
+    else
+      "Soma das contas ativas."
+    end
   end
 
   def panels
