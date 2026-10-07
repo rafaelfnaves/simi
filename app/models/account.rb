@@ -12,6 +12,10 @@ class Account < ApplicationRecord
     "cash" => "Accounts::Cash"
   }.freeze
 
+  # The balance column is numeric(15, 2): thirteen digits before the comma. A
+  # larger value would pass every validation and then crash the INSERT.
+  BALANCE_LIMIT = BigDecimal("1e13")
+
   belongs_to :user
 
   attribute :balance, MoneyType.new(precision: 15, scale: 2)
@@ -29,6 +33,7 @@ class Account < ApplicationRecord
     uniqueness: { scope: :user_id, case_sensitive: false, conditions: -> { active } },
     if: :active?
   validate :balance_must_read_as_money
+  validate :balance_must_fit
 
   scope :deposits, -> { where(type: Accounts::Deposit::TYPES) }
   scope :active, -> { where(archived_at: nil) }
@@ -75,5 +80,9 @@ class Account < ApplicationRecord
       return unless raw.is_a?(String) && raw.strip.present?
 
       errors.add(:balance, :not_a_number) unless MoneyType.accepts?(raw)
+    end
+
+    def balance_must_fit
+      errors.add(:balance, :too_large) if balance && balance.abs >= BALANCE_LIMIT
     end
 end

@@ -41,6 +41,21 @@ RSpec.describe Account do
       expect(account.errors[:balance]).to be_present
     end
 
+    it "refuses a balance the column cannot hold, instead of crashing on save" do
+      account = build(:account, balance: "10.000.000.000.000,00")
+
+      expect(account).not_to be_valid
+      expect(account.errors.added?(:balance, :too_large)).to be(true)
+    end
+
+    it "refuses a negative balance beyond the same limit" do
+      expect(build(:account, balance: "-10000000000000")).not_to be_valid
+    end
+
+    it "accepts the largest balance the column holds" do
+      expect(create(:account, balance: "9.999.999.999.999,99").balance).to eq(BigDecimal("9999999999999.99"))
+    end
+
     it "keeps centavos exact when balances are summed" do
       user = create(:user)
       create(:account, user:, balance: "0,01")

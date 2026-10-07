@@ -83,10 +83,15 @@ pt-BR:
 
     errors:
       models:
+        account:
+          attributes:
+            balance:
+              too_large: está acima do limite aceito
         category:
           attributes:
             parent_id:
               too_deep: aceita apenas dois níveis de categoria
+              archived: está arquivada
             nature:
               immutable: não pode ser alterada depois da criação
 
