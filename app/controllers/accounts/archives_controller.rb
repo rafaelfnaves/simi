@@ -9,7 +9,7 @@ class Accounts::ArchivesController < ApplicationController
   def destroy
     @account.unarchive!
     redirect_to accounts_path, notice: t("accounts.archives.flash.unarchived")
-  rescue ActiveRecord::RecordInvalid
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique
     redirect_to accounts_path, alert: t("accounts.archives.flash.name_taken")
   end
 

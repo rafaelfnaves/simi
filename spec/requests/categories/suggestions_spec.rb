@@ -27,6 +27,15 @@ RSpec.describe "Category suggestions" do
       expect { post categories_suggestions_path }.not_to change { user.categories.count }
     end
 
+    it "treats losing a double-click race as success, since the set now exists" do
+      allow(Category).to receive(:create_suggested_for).and_raise(ActiveRecord::RecordNotUnique)
+
+      post categories_suggestions_path
+
+      expect(response).to redirect_to(categories_path)
+      expect(flash[:notice]).to eq(I18n.t("categories.suggestions.flash.created"))
+    end
+
     it "does not revive what the person archived" do
       post categories_suggestions_path
       lazer = user.categories.find_by(name: "Lazer")

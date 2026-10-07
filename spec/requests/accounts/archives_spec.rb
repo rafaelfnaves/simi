@@ -45,5 +45,15 @@ RSpec.describe "Account archives" do
       expect(flash[:alert]).to eq(I18n.t("accounts.archives.flash.name_taken"))
       expect(archived.reload).to be_archived
     end
+
+    it "refuses with a message when a concurrent request takes the name first" do
+      account = create(:account, :archived, user:)
+      allow_any_instance_of(Account).to receive(:unarchive!).and_raise(ActiveRecord::RecordNotUnique)
+
+      delete account_archive_path(account)
+
+      expect(response).to redirect_to(accounts_path)
+      expect(flash[:alert]).to eq(I18n.t("accounts.archives.flash.name_taken"))
+    end
   end
 end
