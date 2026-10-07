@@ -7,19 +7,19 @@ class Views::Passwords::New < Views::AuthBase
     RubyUI.Form(action: passwords_path, method: "post", class: "flex flex-col gap-4") do
       input(type: "hidden", name: "authenticity_token", value: form_authenticity_token)
 
-      render Components::Field.new(name: :email_address, label: "E-mail", type: :email, autocomplete: "email")
+      render Components::Field.new(name: :email_address, label: User.human_attribute_name(:email_address), type: :email, autocomplete: "email")
 
-      RubyUI.Button(type: "submit", class: "w-full") { "Enviar link de redefinição" }
+      RubyUI.Button(type: "submit", class: "w-full") { t(".submit") }
     end
 
     p(class: "text-center text-sm text-muted-foreground") do
-      RubyUI.Link(href: new_session_path) { "Voltar para a entrada" }
+      RubyUI.Link(href: new_session_path) { t(".back") }
     end
   end
 
   private
 
-  def page_title = "Esqueci minha senha"
+  def page_title = t(".title")
 
-  def page_subtitle = "Enviaremos um link para você escolher uma nova senha."
+  def page_subtitle = t(".subtitle")
 end

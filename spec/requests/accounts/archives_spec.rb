@@ -42,7 +42,7 @@ RSpec.describe "Account archives" do
       delete account_archive_path(archived)
 
       expect(response).to redirect_to(accounts_path)
-      expect(flash[:alert]).to include("já existe uma conta ativa com esse nome".capitalize)
+      expect(flash[:alert]).to eq(I18n.t("accounts.archives.flash.name_taken"))
       expect(archived.reload).to be_archived
     end
   end

@@ -7,8 +7,8 @@ class Views::Mailers::PasswordsMailer::Reset < Components::Base
   end
 
   def view_template
-    p { "Você pediu para redefinir sua senha do SIMI." }
-    p { a(href: @url) { "Escolher uma nova senha" } }
-    p { "O link vale por #{@expires_in}. Se não foi você quem pediu, ignore esta mensagem." }
+    p { t(".body") }
+    p { a(href: @url) { t(".action") } }
+    p { t(".expiry", expires_in: @expires_in) }
   end
 end

@@ -17,10 +17,10 @@ class Components::UserMenu < Components::Base
       RubyUI.DropdownMenuContent(class: "w-56") do
         RubyUI.DropdownMenuLabel { Current.user.email_address }
         RubyUI.DropdownMenuSeparator
-        RubyUI.DropdownMenuItem(href: settings_profile_path) { "Perfil" }
+        RubyUI.DropdownMenuItem(href: settings_profile_path) { t(".profile") }
         RubyUI.DropdownMenuSeparator
         RubyUI.DropdownMenuItem do
-          button_to "Sair", session_path, method: :delete, class: "w-full text-left"
+          button_to t(".sign_out"), session_path, method: :delete, class: "w-full text-left"
         end
       end
     end

@@ -6,7 +6,7 @@ class Views::Accounts::Edit < Views::Base
   end
 
   def view_template
-    render Components::PageHeader.new(title: "Editar conta", subtitle: @account.name)
+    render Components::PageHeader.new(title: t(".title"), subtitle: @account.name)
 
     RubyUI.Card(class: "p-6 max-w-xl") do
       render Components::AccountForm.new(

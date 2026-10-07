@@ -1,0 +1,115 @@
+pt-BR:
+  activerecord:
+    models:
+      account:
+        one: Conta
+        other: Contas
+      category:
+        one: Categoria
+        other: Categorias
+      session:
+        one: Sessão
+        other: Sessões
+      user:
+        one: Usuário
+        other: Usuários
+
+    attributes:
+      account:
+        user: Usuário
+        type: Tipo
+        name: Nome
+        institution: Instituição
+        balance: Saldo
+        kind: Tipo
+        archived_at: Arquivada em
+        # Tipos de conta. São subclasses, não um enum do Active Record, mas o
+        # vocabulário visível é o mesmo e vive aqui pelo mesmo motivo.
+        kinds:
+          checking: Conta corrente
+          savings: Poupança
+          wallet: Carteira digital
+          cash: Dinheiro em espécie
+      category:
+        name: Nome
+        nature: Natureza
+        color: Cor
+        icon: Ícone
+        user: Usuário
+        parent: Categoria-mãe
+        parent_id: Categoria-mãe
+        archived_at: Arquivada em
+        natures:
+          expense: Despesa
+          income: Receita
+        colors:
+          slate: Cinza
+          rose: Rosa
+          orange: Laranja
+          amber: Âmbar
+          lime: Limão
+          emerald: Verde
+          teal: Turquesa
+          sky: Azul
+          violet: Violeta
+          fuchsia: Magenta
+        icons:
+          home: Casa
+          food: Alimentação
+          car: Transporte
+          health: Saúde
+          education: Educação
+          leisure: Lazer
+          shopping: Compras
+          receipt: Assinatura
+          travel: Viagem
+          work: Trabalho
+          gift: Presente
+          savings: Investimento
+          wallet: Carteira
+          other: Outro
+      user:
+        name: Nome
+        email_address: E-mail
+        password: Senha
+        password_confirmation: Confirmação da senha
+        time_zone: Fuso horário
+        theme: Tema
+        locale: Idioma
+        themes:
+          system: Seguir o sistema
+          light: Claro
+          dark: Escuro
+
+    errors:
+      models:
+        category:
+          attributes:
+            parent_id:
+              too_deep: aceita apenas dois níveis de categoria
+            nature:
+              immutable: não pode ser alterada depois da criação
+
+  # O conjunto que a tela de categorias oferece enquanto a pessoa não tem
+  # nenhuma. A estrutura — quais raízes, quais filhas, cor e ícone — fica em
+  # Category::SUGGESTED; aqui ficam só os nomes. As mensagens de flash desse
+  # recurso estão em pt-BR.flash.yml.
+  categories:
+    suggested:
+      housing: Moradia
+      food: Alimentação
+      groceries: Mercado
+      restaurants: Restaurantes
+      delivery: Delivery
+      transport: Transporte
+      fuel: Combustível
+      rideshare: Transporte por app
+      health: Saúde
+      education: Educação
+      leisure: Lazer
+      shopping: Compras
+      subscriptions: Assinaturas
+      other_expenses: Outros gastos
+      salary: Salário
+      investments: Investimentos
+      other_income: Outras receitas

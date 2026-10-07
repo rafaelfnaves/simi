@@ -9,15 +9,14 @@ class Views::Categories::Index < Views::Base
   end
 
   def view_template
-    render Components::PageHeader.new(
-      title: "Categorias",
-      subtitle: "Como você classifica o que entra e o que sai."
-    ) { RubyUI.Button(as: :a, href: new_category_path) { "Nova categoria" } }
+    render Components::PageHeader.new(title: t(".title"), subtitle: t(".subtitle")) do
+      RubyUI.Button(as: :a, href: new_category_path) { t(".new") }
+    end
 
     return empty_state if @roots.none?
 
     div(class: "flex flex-col gap-4") do
-      Category::NATURE_LABELS.each_key { |nature| nature_card(nature) }
+      Category.natures_in_order.each { |nature| nature_card(nature) }
     end
   end
 
@@ -27,24 +26,20 @@ class Views::Categories::Index < Views::Base
     RubyUI.Card(class: "p-6") do
       RubyUI.Empty do
         RubyUI.EmptyHeader do
-          RubyUI.EmptyTitle { "Nenhuma categoria cadastrada" }
-          RubyUI.EmptyDescription do
-            plain "Categorias são o vocabulário com que você classifica cada lançamento — " \
-                  "é delas que saem os gastos por categoria e a evolução mensal. " \
-                  "Comece com um conjunto comum no Brasil e ajuste o que não servir."
-          end
+          RubyUI.EmptyTitle { t(".empty_title") }
+          RubyUI.EmptyDescription { t(".empty_description") }
         end
 
         RubyUI.EmptyContent(class: "flex flex-col items-center gap-2") do
           suggestion_form if @suggestible
-          RubyUI.Link(href: new_category_path) { "Prefiro criar as minhas" }
+          RubyUI.Link(href: new_category_path) { t(".suggest_decline") }
         end
       end
     end
   end
 
   def suggestion_form
-    button_to "Começar com as categorias sugeridas", categories_suggestions_path,
+    button_to t(".suggest"), categories_suggestions_path,
       class: "inline-flex h-9 items-center rounded-md bg-primary px-4 text-sm " \
              "font-medium text-primary-foreground"
   end
@@ -54,13 +49,13 @@ class Views::Categories::Index < Views::Base
 
     RubyUI.Card(class: "p-5 flex flex-col gap-4") do
       h2(class: "text-sm font-medium text-muted-foreground") do
-        nature == "expense" ? "Despesas" : "Receitas"
+        nature == "expense" ? t(".expenses") : t(".incomes")
       end
 
       if roots.any?
         ul(class: "flex flex-col gap-3") { roots.each { |root| root_item(root) } }
       else
-        p(class: "text-sm text-muted-foreground") { "Nenhuma categoria desta natureza ainda." }
+        p(class: "text-sm text-muted-foreground") { t(".none_of_nature") }
       end
     end
   end
@@ -82,7 +77,7 @@ class Views::Categories::Index < Views::Base
     div(class: "flex flex-wrap items-center justify-between gap-2") do
       div(class: "flex items-center gap-2") do
         render Components::CategoryBadge.new(category, class: ("opacity-60" if category.archived?))
-        RubyUI.Badge(variant: :outline) { "Arquivada" } if category.archived?
+        RubyUI.Badge(variant: :outline) { t(".archived") } if category.archived?
       end
 
       actions(category)
@@ -93,20 +88,20 @@ class Views::Categories::Index < Views::Base
     div(class: "ml-auto flex flex-wrap items-center justify-end gap-x-3 gap-y-1") do
       if category.root? && category.active?
         RubyUI.Link(href: new_category_path(parent_id: category.id), class: "text-sm") do
-          "Nova subcategoria"
+          t(".new_subcategory")
         end
       end
 
-      RubyUI.Link(href: edit_category_path(category), class: "text-sm") { "Editar" }
+      RubyUI.Link(href: edit_category_path(category), class: "text-sm") { t("actions.edit") }
 
       if category.archived?
-        button_to "Reativar", category_archive_path(category), method: :delete, class: link_classes
+        button_to t("actions.unarchive"), category_archive_path(category), method: :delete, class: link_classes
       else
-        button_to "Arquivar", category_archive_path(category), class: link_classes
+        button_to t("actions.archive"), category_archive_path(category), class: link_classes
       end
 
-      button_to "Excluir", category_path(category), method: :delete, class: link_classes,
-        form: { data: { turbo_confirm: "Excluir #{category.name}? Isso não pode ser desfeito." } }
+      button_to t("actions.delete"), category_path(category), method: :delete, class: link_classes,
+        form: { data: { turbo_confirm: t("confirm.delete", name: category.name) } }
     end
   end
 

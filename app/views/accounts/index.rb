@@ -8,10 +8,9 @@ class Views::Accounts::Index < Views::Base
   end
 
   def view_template
-    render Components::PageHeader.new(
-      title: "Contas",
-      subtitle: "Onde o seu dinheiro está."
-    ) { RubyUI.Button(as: :a, href: new_account_path) { "Nova conta" } }
+    render Components::PageHeader.new(title: t(".title"), subtitle: t(".subtitle")) do
+      RubyUI.Button(as: :a, href: new_account_path) { t(".new") }
+    end
 
     @accounts.any? ? table : empty_state
   end
@@ -22,15 +21,11 @@ class Views::Accounts::Index < Views::Base
     RubyUI.Card(class: "p-6") do
       RubyUI.Empty do
         RubyUI.EmptyHeader do
-          RubyUI.EmptyTitle { "Nenhuma conta cadastrada" }
-          RubyUI.EmptyDescription do
-            plain "Uma conta é um lugar onde o seu dinheiro está: um banco, uma poupança, " \
-                  "uma carteira digital ou o dinheiro em espécie. Cadastre a primeira para " \
-                  "começar a acompanhar o saldo."
-          end
+          RubyUI.EmptyTitle { t(".empty_title") }
+          RubyUI.EmptyDescription { t(".empty_description") }
         end
         RubyUI.EmptyContent do
-          RubyUI.Button(as: :a, href: new_account_path) { "Cadastrar conta" }
+          RubyUI.Button(as: :a, href: new_account_path) { t(".empty_action") }
         end
       end
     end
@@ -41,11 +36,11 @@ class Views::Accounts::Index < Views::Base
       RubyUI.Table do
         RubyUI.TableHeader do
           RubyUI.TableRow do
-            RubyUI.TableHead { "Conta" }
-            RubyUI.TableHead { "Tipo" }
-            RubyUI.TableHead { "Instituição" }
-            RubyUI.TableHead(class: "text-right") { "Saldo" }
-            RubyUI.TableHead(class: "text-right") { "Ações" }
+            RubyUI.TableHead { t(".columns.name") }
+            RubyUI.TableHead { t(".columns.kind") }
+            RubyUI.TableHead { t(".columns.institution") }
+            RubyUI.TableHead(class: "text-right") { t(".columns.balance") }
+            RubyUI.TableHead(class: "text-right") { t(".columns.actions") }
           end
         end
 
@@ -61,11 +56,11 @@ class Views::Accounts::Index < Views::Base
       RubyUI.TableCell(class: "font-medium") do
         div(class: "flex items-center gap-2") do
           span(class: ("text-muted-foreground" if account.archived?)) { account.name }
-          RubyUI.Badge(variant: :outline) { "Arquivada" } if account.archived?
+          RubyUI.Badge(variant: :outline) { t(".archived") } if account.archived?
         end
       end
-      RubyUI.TableCell { Account::KIND_LABELS.fetch(account.kind) }
-      RubyUI.TableCell { account.institution || "—" }
+      RubyUI.TableCell { account.human_kind }
+      RubyUI.TableCell { account.institution || t(".blank") }
       RubyUI.TableCell(class: "text-right tabular-nums") do
         render Components::Money.new(account.balance, tone: :signed)
       end
@@ -75,16 +70,16 @@ class Views::Accounts::Index < Views::Base
 
   def actions(account)
     div(class: "flex flex-wrap items-center justify-end gap-x-3 gap-y-1") do
-      RubyUI.Link(href: edit_account_path(account)) { "Editar" }
+      RubyUI.Link(href: edit_account_path(account)) { t("actions.edit") }
 
       if account.archived?
-        button_to "Reativar", account_archive_path(account), method: :delete, class: link_classes
+        button_to t("actions.unarchive"), account_archive_path(account), method: :delete, class: link_classes
       else
-        button_to "Arquivar", account_archive_path(account), class: link_classes
+        button_to t("actions.archive"), account_archive_path(account), class: link_classes
       end
 
-      button_to "Excluir", account_path(account), method: :delete, class: link_classes,
-        form: { data: { turbo_confirm: "Excluir #{account.name}? Isso não pode ser desfeito." } }
+      button_to t("actions.delete"), account_path(account), method: :delete, class: link_classes,
+        form: { data: { turbo_confirm: t("confirm.delete", name: account.name) } }
     end
   end
 

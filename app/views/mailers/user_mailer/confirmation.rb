@@ -8,9 +8,9 @@ class Views::Mailers::UserMailer::Confirmation < Components::Base
   end
 
   def view_template
-    p { "Olá, #{@user.name}." }
-    p { "Confirme seu cadastro no SIMI para começar a usar sua conta." }
-    p { a(href: @url) { "Confirmar meu cadastro" } }
-    p { "O link vale por #{@expires_in}. Se não foi você quem se cadastrou, ignore esta mensagem." }
+    p { t(".greeting", name: @user.name) }
+    p { t(".body") }
+    p { a(href: @url) { t(".action") } }
+    p { t(".expiry", expires_in: @expires_in) }
   end
 end

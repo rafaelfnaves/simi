@@ -16,7 +16,7 @@ RSpec.describe "Categories" do
       get categories_path
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Nenhuma categoria cadastrada")
+      expect(response.body).to include(I18n.t("views.categories.index.empty_title"))
       expect(Nokogiri::HTML5(response.body).at_css("form[action='/categories/suggestions']")).to be_present
     end
 
@@ -27,7 +27,10 @@ RSpec.describe "Categories" do
 
       get categories_path
 
-      expect(response.body).to include("Despesas", "Alimentação", "Receitas", "Salário")
+      expect(response.body).to include(
+        I18n.t("views.categories.index.expenses"), "Alimentação",
+        I18n.t("views.categories.index.incomes"), "Salário"
+      )
     end
 
     it "shows the subcategories under their parent" do
@@ -55,7 +58,7 @@ RSpec.describe "Categories" do
 
       get categories_path
 
-      expect(response.body).to include("Lazer antigo", "Arquivada")
+      expect(response.body).to include("Lazer antigo", I18n.t("views.categories.index.archived"))
     end
 
     it "never shows someone else's categories" do
@@ -204,7 +207,7 @@ RSpec.describe "Categories" do
       delete category_path(parent)
 
       expect(response).to redirect_to(categories_path)
-      expect(flash[:alert]).to include("Arquive")
+      expect(flash[:alert]).to eq(I18n.t("categories.flash.in_use"))
       expect(parent.reload).to be_persisted
     end
   end

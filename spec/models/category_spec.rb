@@ -43,7 +43,8 @@ RSpec.describe Category do
       grandchild = build(:category, user: child.user, parent: child)
 
       expect(grandchild).not_to be_valid
-      expect(grandchild.errors[:parent_id].join).to include("two levels")
+      expect(grandchild.errors[:parent_id])
+        .to include(I18n.t("activerecord.errors.models.category.attributes.parent_id.too_deep"))
     end
 
     it "knows a root from a subcategory" do
@@ -99,7 +100,8 @@ RSpec.describe Category do
       category.nature = "income"
 
       expect(category).not_to be_valid
-      expect(category.errors[:nature].join).to include("cannot change")
+      expect(category.errors[:nature])
+        .to include(I18n.t("activerecord.errors.models.category.attributes.nature.immutable"))
     end
   end
 

@@ -1,8 +1,4 @@
 class CategoriesController < ApplicationController
-  SAVED = "Categoria salva.".freeze
-  DELETED = "Categoria excluída.".freeze
-  IN_USE = "Esta categoria ainda tem subcategorias ou registros. Arquive-a em vez de excluir.".freeze
-
   before_action :set_category, only: %i[ edit update destroy ]
 
   def index
@@ -21,7 +17,7 @@ class CategoriesController < ApplicationController
     category.parent = parent
 
     if category.save
-      redirect_to categories_path, notice: SAVED
+      redirect_to categories_path, notice: t("categories.flash.saved")
     else
       render Views::Categories::New.new(category:, parents:), status: :unprocessable_content
     end
@@ -33,7 +29,7 @@ class CategoriesController < ApplicationController
 
   def update
     if @category.update(attributes)
-      redirect_to categories_path, notice: SAVED
+      redirect_to categories_path, notice: t("categories.flash.saved")
     else
       render Views::Categories::Edit.new(category: @category), status: :unprocessable_content
     end
@@ -41,9 +37,9 @@ class CategoriesController < ApplicationController
 
   def destroy
     if @category.destroy
-      redirect_to categories_path, notice: DELETED
+      redirect_to categories_path, notice: t("categories.flash.destroyed")
     else
-      redirect_to categories_path, alert: IN_USE
+      redirect_to categories_path, alert: t("categories.flash.in_use")
     end
   end
 

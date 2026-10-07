@@ -19,15 +19,18 @@ class Components::AccountForm < Components::Base
       input(type: "hidden", name: "_method", value: @method) if @method
 
       kind_field if @kind_editable
-      render Components::Field.new(name: :name, label: "Nome", model: @account, scope: "account")
       render Components::Field.new(
-        name: :institution, label: "Instituição", model: @account, scope: "account"
+        name: :name, label: Account.human_attribute_name(:name), model: @account, scope: "account"
+      )
+      render Components::Field.new(
+        name: :institution, label: Account.human_attribute_name(:institution),
+        model: @account, scope: "account"
       )
       balance_field
 
       div(class: "flex items-center gap-3") do
-        RubyUI.Button(type: "submit") { "Salvar" }
-        RubyUI.Link(href: accounts_path) { "Cancelar" }
+        RubyUI.Button(type: "submit") { t(".submit") }
+        RubyUI.Link(href: accounts_path) { t(".cancel") }
       end
     end
   end
@@ -36,19 +39,20 @@ class Components::AccountForm < Components::Base
 
   def kind_field
     render Components::SelectField.new(
-      name: :kind, label: "Tipo", scope: "account", model: @account,
-      selected: @account.kind, options: Account::KIND_LABELS.to_a
+      name: :kind, label: Account.human_attribute_name(:kind), scope: "account", model: @account,
+      selected: @account.kind,
+      options: Account::KINDS.keys.map { |kind| [ kind, Account.human_kind(kind) ] }
     )
   end
 
   def balance_field
     RubyUI.FormField do
-      RubyUI.FormFieldLabel(for: "account_balance") { "Saldo atual" }
+      RubyUI.FormFieldLabel(for: "account_balance") { t(".balance_label") }
       RubyUI.Input(
         id: "account_balance", name: "account[balance]", value: formatted_balance,
-        inputmode: "decimal", placeholder: "0,00"
+        inputmode: "decimal", placeholder: t(".balance_placeholder")
       )
-      RubyUI.FormFieldHint { "Use vírgula para os centavos. Saldo negativo é aceito." }
+      RubyUI.FormFieldHint { t(".balance_hint") }
       RubyUI.FormFieldError { @account.errors[:balance].to_sentence } if @account.errors[:balance].any?
     end
   end

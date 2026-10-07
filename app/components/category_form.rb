@@ -3,19 +3,6 @@
 class Components::CategoryForm < Components::Base
   include Phlex::Rails::Helpers::FormAuthenticityToken
 
-  COLOR_LABELS = {
-    "slate" => "Cinza", "rose" => "Rosa", "orange" => "Laranja", "amber" => "Âmbar",
-    "lime" => "Limão", "emerald" => "Verde", "teal" => "Turquesa", "sky" => "Azul",
-    "violet" => "Violeta", "fuchsia" => "Magenta"
-  }.freeze
-
-  ICON_LABELS = {
-    "home" => "Casa", "food" => "Alimentação", "car" => "Transporte", "health" => "Saúde",
-    "education" => "Educação", "leisure" => "Lazer", "shopping" => "Compras",
-    "receipt" => "Assinatura", "travel" => "Viagem", "work" => "Trabalho", "gift" => "Presente",
-    "savings" => "Investimento", "wallet" => "Carteira", "other" => "Outro"
-  }.freeze
-
   # @param parents [Enumerable<Category>, nil] the roots a new category may hang
   #   from; nil on an edit, where neither the parent nor the nature can change
   def initialize(category:, action:, parents: nil, method: nil)
@@ -30,15 +17,17 @@ class Components::CategoryForm < Components::Base
       input(type: "hidden", name: "authenticity_token", value: form_authenticity_token)
       input(type: "hidden", name: "_method", value: @method) if @method
 
-      render Components::Field.new(name: :name, label: "Nome", model: @category, scope: "category")
+      render Components::Field.new(
+        name: :name, label: Category.human_attribute_name(:name), model: @category, scope: "category"
+      )
       nature_and_parent_fields if @parents
       color_field
       icon_field
       preview
 
       div(class: "flex items-center gap-3") do
-        RubyUI.Button(type: "submit") { "Salvar" }
-        RubyUI.Link(href: categories_path) { "Cancelar" }
+        RubyUI.Button(type: "submit") { t(".submit") }
+        RubyUI.Link(href: categories_path) { t(".cancel") }
       end
     end
   end
@@ -47,29 +36,31 @@ class Components::CategoryForm < Components::Base
 
   def nature_and_parent_fields
     render Components::SelectField.new(
-      name: :nature, label: "Natureza", scope: "category", model: @category,
-      options: Category::NATURE_LABELS.to_a,
-      hint: "Uma subcategoria herda a natureza da categoria-mãe."
+      name: :nature, label: Category.human_attribute_name(:nature), scope: "category",
+      model: @category, hint: t(".nature_hint"),
+      options: Category.natures_in_order.map { |nature| [ nature, Category.human_nature(nature) ] }
     )
 
     render Components::SelectField.new(
-      name: :parent_id, label: "Dentro de", scope: "category", model: @category,
-      options: [ [ "", "Nenhuma — é uma categoria principal" ] ] + @parents.map { |p| [ p.id, p.name ] },
-      hint: "Deixe em branco para criar uma categoria principal."
+      name: :parent_id, label: Category.human_attribute_name(:parent_id), scope: "category",
+      model: @category, hint: t(".parent_hint"),
+      options: [ [ "", t(".parent_none") ] ] + @parents.map { |parent| [ parent.id, parent.name ] }
     )
   end
 
   def color_field
     render Components::SelectField.new(
-      name: :color, label: "Cor", scope: "category", model: @category,
-      options: Category::COLORS.keys.map { |color| [ color, COLOR_LABELS.fetch(color) ] }
+      name: :color, label: Category.human_attribute_name(:color), scope: "category",
+      model: @category,
+      options: Category::COLORS.keys.map { |color| [ color, Category.human_color(color) ] }
     )
   end
 
   def icon_field
     render Components::SelectField.new(
-      name: :icon, label: "Ícone", scope: "category", model: @category,
-      options: Category::ICONS.map { |icon| [ icon, ICON_LABELS.fetch(icon) ] }
+      name: :icon, label: Category.human_attribute_name(:icon), scope: "category",
+      model: @category,
+      options: Category::ICONS.map { |icon| [ icon, Category.human_icon(icon) ] }
     )
   end
 
@@ -80,7 +71,7 @@ class Components::CategoryForm < Components::Base
     return if @category.errors[:color].any? || @category.errors[:icon].any?
 
     RubyUI.FormField do
-      RubyUI.FormFieldLabel { "Como vai aparecer" }
+      RubyUI.FormFieldLabel { t(".preview") }
       div { render Components::CategoryBadge.new(@category) }
     end
   end

@@ -6,10 +6,7 @@ class Views::Categories::Edit < Views::Base
   end
 
   def view_template
-    render Components::PageHeader.new(
-      title: "Editar categoria",
-      subtitle: subtitle
-    )
+    render Components::PageHeader.new(title: t(".title"), subtitle: subtitle)
 
     RubyUI.Card(class: "p-6 max-w-xl") do
       render Components::CategoryForm.new(
@@ -21,7 +18,8 @@ class Views::Categories::Edit < Views::Base
   private
 
   def subtitle
-    nature = Category::NATURE_LABELS.fetch(@category.nature)
-    @category.root? ? nature : "#{nature} · dentro de #{@category.parent.name}"
+    return @category.human_nature if @category.root?
+
+    t(".inside", nature: @category.human_nature, parent: @category.parent.name)
   end
 end

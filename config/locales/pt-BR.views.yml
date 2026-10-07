@@ -1,0 +1,207 @@
+pt-BR:
+  # A árvore espelha a árvore de classes Phlex: Views::Accounts::Index lê
+  # views.accounts.index, Components::AccountForm lê components.account_form.
+  # Quem resolve é Phlex::Rails::Helpers::Translate, a partir do nome da classe.
+  #
+  # Rótulo de campo que é apenas o nome de um atributo não entra aqui: vem de
+  # activerecord.attributes, para existir em um lugar só.
+  views:
+    dashboard:
+      show:
+        title: Dashboard
+        subtitle: Sua vida financeira em um só lugar.
+        consolidated: Saldo consolidado
+        consolidated_hint: Soma das contas ativas.
+        consolidated_empty: Cadastre suas contas para ver o saldo.
+        income: Receitas do mês
+        income_hint: Nenhuma receita registrada neste mês.
+        expenses: Despesas do mês
+        expenses_hint: Nenhuma despesa registrada neste mês.
+        by_category: Gastos por categoria
+        by_category_empty_title: Nada para mostrar ainda
+        by_category_empty_description: Quando houver despesas categorizadas, elas aparecem aqui divididas por categoria.
+        by_project: Despesas por projeto
+        by_project_empty_title: Nenhum projeto em andamento
+        by_project_empty_description: Agrupe gastos de uma viagem ou reforma em um projeto para acompanhar o total.
+        monthly: Evolução mensal
+        monthly_empty_title: Ainda sem histórico
+        monthly_empty_description: Depois de alguns meses de lançamentos, a evolução das suas receitas e despesas aparece aqui.
+        latest: Últimas movimentações
+        latest_empty_title: Nenhuma movimentação
+        latest_empty_description: Importe um extrato ou registre um lançamento para começar.
+
+    accounts:
+      index:
+        title: Contas
+        subtitle: Onde o seu dinheiro está.
+        new: Nova conta
+        empty_title: Nenhuma conta cadastrada
+        empty_description: "Uma conta é um lugar onde o seu dinheiro está: um banco, uma poupança, uma carteira digital ou o dinheiro em espécie. Cadastre a primeira para começar a acompanhar o saldo."
+        empty_action: Cadastrar conta
+        archived: Arquivada
+        blank: —
+        columns:
+          name: Conta
+          kind: Tipo
+          institution: Instituição
+          balance: Saldo
+          actions: Ações
+      new:
+        title: Nova conta
+        subtitle: Onde esse dinheiro fica.
+      edit:
+        title: Editar conta
+
+    categories:
+      index:
+        title: Categorias
+        subtitle: Como você classifica o que entra e o que sai.
+        new: Nova categoria
+        empty_title: Nenhuma categoria cadastrada
+        empty_description: Categorias são o vocabulário com que você classifica cada lançamento — é delas que saem os gastos por categoria e a evolução mensal. Comece com um conjunto comum no Brasil e ajuste o que não servir.
+        suggest: Começar com as categorias sugeridas
+        suggest_decline: Prefiro criar as minhas
+        archived: Arquivada
+        expenses: Despesas
+        incomes: Receitas
+        none_of_nature: Nenhuma categoria desta natureza ainda.
+        new_subcategory: Nova subcategoria
+      new:
+        title: Nova categoria
+        subtitle: Despesa ou receita, com uma cor e um ícone para reconhecer de relance.
+      edit:
+        title: Editar categoria
+        inside: "%{nature} · dentro de %{parent}"
+
+    sessions:
+      new:
+        title: Entrar
+        subtitle: Acesse sua vida financeira.
+        submit: Entrar
+        forgot: Esqueci minha senha
+        no_account: "Não tem conta? "
+        sign_up: Criar agora
+
+    registrations:
+      new:
+        title: Criar sua conta
+        subtitle: Organize sua vida financeira em um só lugar.
+        submit: Criar conta
+        has_account: "Já tem uma conta? "
+        sign_in: Entrar
+
+    confirmations:
+      new:
+        title: Confirmar cadastro
+        subtitle: Informe seu e-mail e enviaremos um novo link de confirmação.
+        submit: Enviar novo link
+        back: Voltar para a entrada
+
+    passwords:
+      new:
+        title: Esqueci minha senha
+        subtitle: Enviaremos um link para você escolher uma nova senha.
+        submit: Enviar link de redefinição
+        back: Voltar para a entrada
+      edit:
+        title: Escolher nova senha
+        password: Nova senha
+        password_confirmation: Repita a nova senha
+        submit: Salvar nova senha
+
+    settings:
+      profiles:
+        show:
+          title: Perfil
+          subtitle: Seus dados e preferências.
+          submit: Salvar
+          email_hint: O e-mail é o identificador da conta e não pode ser alterado aqui.
+          change_password_prompt: "Quer trocar a senha? "
+          change_password_link: Enviar link de redefinição
+
+    mailers:
+      user_mailer:
+        confirmation:
+          greeting: "Olá, %{name}."
+          body: Confirme seu cadastro no SIMI para começar a usar sua conta.
+          action: Confirmar meu cadastro
+          expiry: O link vale por %{expires_in}. Se não foi você quem se cadastrou, ignore esta mensagem.
+      passwords_mailer:
+        reset:
+          body: Você pediu para redefinir sua senha do SIMI.
+          action: Escolher uma nova senha
+          expiry: O link vale por %{expires_in}. Se não foi você quem pediu, ignore esta mensagem.
+
+  components:
+    main_nav:
+      aria_label: Navegação principal
+      soon: Em breve
+      dashboard: Dashboard
+      transactions: Transações
+      accounts: Contas
+      cards: Cartões
+      categories: Categorias
+      settings: Configurações
+
+    user_menu:
+      profile: Perfil
+      sign_out: Sair
+
+    theme_switcher:
+      label: Alternar tema
+
+    account_form:
+      balance_label: Saldo atual
+      balance_hint: Use vírgula para os centavos. Saldo negativo é aceito.
+      balance_placeholder: "0,00"
+      submit: Salvar
+      cancel: Cancelar
+
+    category_form:
+      nature_hint: Uma subcategoria herda a natureza da categoria-mãe.
+      parent_none: Nenhuma — é uma categoria principal
+      parent_hint: Deixe em branco para criar uma categoria principal.
+      preview: Como vai aparecer
+      submit: Salvar
+      cancel: Cancelar
+
+  # Assunto e corpo em texto dos e-mails. O corpo HTML fica em views.mailers.
+  mailers:
+    user_mailer:
+      confirmation:
+        subject: Confirme seu cadastro no SIMI
+        text: |
+          Olá, %{name}.
+
+          Confirme seu cadastro no SIMI abrindo o endereço abaixo:
+
+          %{url}
+
+          O link vale por %{expires_in}. Se não foi você quem se cadastrou, ignore esta mensagem.
+    passwords_mailer:
+      reset:
+        subject: Redefina sua senha do SIMI
+        text: |
+          Você pediu para redefinir sua senha do SIMI.
+
+          Escolha uma nova senha no endereço abaixo:
+
+          %{url}
+
+          O link vale por %{expires_in}. Se não foi você quem pediu, ignore esta mensagem.
+    expires_in:
+      hours:
+        one: 1 hora
+        other: "%{count} horas"
+      minutes:
+        one: 1 minuto
+        other: "%{count} minutos"
+
+  confirm:
+    delete: "Excluir %{name}? Isso não pode ser desfeito."
+
+  actions:
+    edit: Editar
+    delete: Excluir
+    archive: Arquivar
+    unarchive: Reativar

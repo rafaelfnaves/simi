@@ -6,7 +6,7 @@ class Views::Accounts::New < Views::Base
   end
 
   def view_template
-    render Components::PageHeader.new(title: "Nova conta", subtitle: "Onde esse dinheiro fica.")
+    render Components::PageHeader.new(title: t(".title"), subtitle: t(".subtitle"))
 
     RubyUI.Card(class: "p-6 max-w-xl") do
       render Components::AccountForm.new(account: @account, action: accounts_path, kind_editable: true)

@@ -1,20 +1,16 @@
 class Accounts::ArchivesController < ApplicationController
-  ARCHIVED = "Conta arquivada.".freeze
-  UNARCHIVED = "Conta reativada.".freeze
-  NAME_TAKEN = "Já existe uma conta ativa com esse nome. Renomeie uma das duas antes de reativar.".freeze
-
   before_action :set_account
 
   def create
     @account.archive!
-    redirect_to accounts_path, notice: ARCHIVED
+    redirect_to accounts_path, notice: t("accounts.archives.flash.archived")
   end
 
   def destroy
     @account.unarchive!
-    redirect_to accounts_path, notice: UNARCHIVED
+    redirect_to accounts_path, notice: t("accounts.archives.flash.unarchived")
   rescue ActiveRecord::RecordInvalid
-    redirect_to accounts_path, alert: NAME_TAKEN
+    redirect_to accounts_path, alert: t("accounts.archives.flash.name_taken")
   end
 
   private

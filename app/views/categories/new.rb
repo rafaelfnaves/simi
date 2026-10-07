@@ -7,10 +7,7 @@ class Views::Categories::New < Views::Base
   end
 
   def view_template
-    render Components::PageHeader.new(
-      title: "Nova categoria",
-      subtitle: "Despesa ou receita, com uma cor e um ícone para reconhecer de relance."
-    )
+    render Components::PageHeader.new(title: t(".title"), subtitle: t(".subtitle"))
 
     RubyUI.Card(class: "p-6 max-w-xl") do
       render Components::CategoryForm.new(

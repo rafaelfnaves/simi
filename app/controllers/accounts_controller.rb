@@ -1,8 +1,4 @@
 class AccountsController < ApplicationController
-  SAVED = "Conta salva.".freeze
-  DELETED = "Conta excluída.".freeze
-  IN_USE = "Esta conta tem registros vinculados. Arquive-a em vez de excluir.".freeze
-
   before_action :set_account, only: %i[ edit update destroy ]
 
   def index
@@ -18,7 +14,7 @@ class AccountsController < ApplicationController
     account = (klass || Accounts::Checking).new(attributes.merge(user: Current.user))
 
     if klass && account.save
-      redirect_to accounts_path, notice: SAVED
+      redirect_to accounts_path, notice: t("accounts.flash.saved")
     else
       account.errors.add(:kind, :inclusion) unless klass
       render Views::Accounts::New.new(account:), status: :unprocessable_content
@@ -31,7 +27,7 @@ class AccountsController < ApplicationController
 
   def update
     if @account.update(attributes)
-      redirect_to accounts_path, notice: SAVED
+      redirect_to accounts_path, notice: t("accounts.flash.saved")
     else
       render Views::Accounts::Edit.new(account: @account), status: :unprocessable_content
     end
@@ -39,9 +35,9 @@ class AccountsController < ApplicationController
 
   def destroy
     if @account.destroy
-      redirect_to accounts_path, notice: DELETED
+      redirect_to accounts_path, notice: t("accounts.flash.destroyed")
     else
-      redirect_to accounts_path, alert: IN_USE
+      redirect_to accounts_path, alert: t("accounts.flash.in_use")
     end
   end
 

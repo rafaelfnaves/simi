@@ -24,25 +24,24 @@ class Category < ApplicationRecord
   }.freeze
 
   # Offered only while the person has no category at all, and created as ordinary
-  # categories of theirs — editable, archivable, with no mark of origin.
+  # categories of theirs — editable, archivable, with no mark of origin. The shape
+  # of the tree is domain; the names people read are copy, and live in the locale.
   SUGGESTED = [
-    { name: "Moradia", nature: "expense", color: "slate", icon: "home" },
-    { name: "Alimentação", nature: "expense", color: "amber", icon: "food",
-      children: [ "Mercado", "Restaurantes", "Delivery" ] },
-    { name: "Transporte", nature: "expense", color: "sky", icon: "car",
-      children: [ "Combustível", "Transporte por app" ] },
-    { name: "Saúde", nature: "expense", color: "rose", icon: "health" },
-    { name: "Educação", nature: "expense", color: "violet", icon: "education" },
-    { name: "Lazer", nature: "expense", color: "fuchsia", icon: "leisure" },
-    { name: "Compras", nature: "expense", color: "orange", icon: "shopping" },
-    { name: "Assinaturas", nature: "expense", color: "teal", icon: "receipt" },
-    { name: "Outros gastos", nature: "expense", color: "slate", icon: "other" },
-    { name: "Salário", nature: "income", color: "emerald", icon: "work" },
-    { name: "Investimentos", nature: "income", color: "lime", icon: "savings" },
-    { name: "Outras receitas", nature: "income", color: "emerald", icon: "other" }
+    { key: :housing, nature: "expense", color: "slate", icon: "home" },
+    { key: :food, nature: "expense", color: "amber", icon: "food",
+      children: %i[ groceries restaurants delivery ] },
+    { key: :transport, nature: "expense", color: "sky", icon: "car",
+      children: %i[ fuel rideshare ] },
+    { key: :health, nature: "expense", color: "rose", icon: "health" },
+    { key: :education, nature: "expense", color: "violet", icon: "education" },
+    { key: :leisure, nature: "expense", color: "fuchsia", icon: "leisure" },
+    { key: :shopping, nature: "expense", color: "orange", icon: "shopping" },
+    { key: :subscriptions, nature: "expense", color: "teal", icon: "receipt" },
+    { key: :other_expenses, nature: "expense", color: "slate", icon: "other" },
+    { key: :salary, nature: "income", color: "emerald", icon: "work" },
+    { key: :investments, nature: "income", color: "lime", icon: "savings" },
+    { key: :other_income, nature: "income", color: "emerald", icon: "other" }
   ].freeze
-
-  NATURE_LABELS = { "expense" => "Despesa", "income" => "Receita" }.freeze
 
   belongs_to :user
   belongs_to :parent, class_name: "Category", optional: true
@@ -83,17 +82,37 @@ class Category < ApplicationRecord
     end
   end
 
-  def self.create_suggested_entry(user, entry)
-    return 0 if user.categories.roots.where("lower(name) = ?", entry[:name].downcase).exists?
+  # @param key [Symbol] an entry of {SUGGESTED}
+  # @return [String] the name a person reads for that suggestion
+  def self.suggested_name(key)
+    I18n.t(key, scope: %i[ categories suggested ])
+  end
 
-    root = user.categories.create!(entry.except(:children))
+  def self.create_suggested_entry(user, entry)
+    name = suggested_name(entry[:key])
+    return 0 if user.categories.roots.where("lower(name) = ?", name.downcase).exists?
+
+    root = user.categories.create!(entry.except(:key, :children).merge(name:))
 
     1 + entry.fetch(:children, []).sum do |child|
-      root.subcategories.create!(user:, name: child, color: root.color, icon: root.icon)
+      root.subcategories.create!(
+        user:, name: suggested_name(child), color: root.color, icon: root.icon
+      )
       1
     end
   end
   private_class_method :create_suggested_entry
+
+  # @return [Array<String>] the natures, in the order the product presents them
+  def self.natures_in_order = natures.keys
+
+  def self.human_nature(nature) = I18n.t(nature, scope: %i[ activerecord attributes category natures ])
+
+  def self.human_color(color) = I18n.t(color, scope: %i[ activerecord attributes category colors ])
+
+  def self.human_icon(icon) = I18n.t(icon, scope: %i[ activerecord attributes category icons ])
+
+  def human_nature = self.class.human_nature(nature)
 
   def active? = archived_at.nil?
 
@@ -130,10 +149,10 @@ class Category < ApplicationRecord
     end
 
     def parent_must_be_a_root
-      errors.add(:parent_id, "only accepts two levels of category") unless parent.nil? || parent.root?
+      errors.add(:parent_id, :too_deep) unless parent.nil? || parent.root?
     end
 
     def nature_cannot_change
-      errors.add(:nature, "cannot change after creation") if nature_changed?
+      errors.add(:nature, :immutable) if nature_changed?
     end
 end

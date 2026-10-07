@@ -36,6 +36,11 @@ module Simi
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # The product is Brazilian and has one locale. What Rails itself says in it
+    # lives in config/locales/pt-BR.rails.yml.
+    config.i18n.default_locale = :"pt-BR"
+    config.i18n.available_locales = [ :"pt-BR" ]
+
     # Don't generate system test files.
     config.generators.system_tests = nil
   end

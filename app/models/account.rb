@@ -12,14 +12,6 @@ class Account < ApplicationRecord
     "cash" => "Accounts::Cash"
   }.freeze
 
-  # Beside the token map so the two cannot drift apart.
-  KIND_LABELS = {
-    "checking" => "Conta corrente",
-    "savings" => "Poupança",
-    "wallet" => "Carteira digital",
-    "cash" => "Dinheiro em espécie"
-  }.freeze
-
   belongs_to :user
 
   attribute :balance, MoneyType.new(precision: 15, scale: 2)
@@ -49,9 +41,20 @@ class Account < ApplicationRecord
     KINDS[kind.to_s]&.constantize
   end
 
+  # @param kind [String, Symbol] a key of {KINDS}
+  # @return [String] the name a person reads for that kind
+  def self.human_kind(kind)
+    I18n.t(kind, scope: %i[ activerecord attributes account kinds ])
+  end
+
   # @return [String, nil] the form token for this record's subclass
   def kind
     KINDS.key(self.class.name)
+  end
+
+  # @return [String] this account's kind, as a person reads it
+  def human_kind
+    self.class.human_kind(kind)
   end
 
   def active? = archived_at.nil?

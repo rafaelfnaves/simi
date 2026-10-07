@@ -16,7 +16,7 @@ RSpec.describe "Accounts" do
       get accounts_path
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Nenhuma conta cadastrada")
+      expect(response.body).to include(I18n.t("views.accounts.index.empty_title"))
     end
 
     it "lists the accounts with their balances" do
@@ -34,7 +34,7 @@ RSpec.describe "Accounts" do
 
       get accounts_path
 
-      expect(response.body).to include("Carteira antiga", "Arquivada")
+      expect(response.body).to include("Carteira antiga", I18n.t("views.accounts.index.archived"))
     end
 
     it "never shows someone else's accounts" do
