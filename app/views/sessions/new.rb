@@ -7,24 +7,24 @@ class Views::Sessions::New < Views::AuthBase
     RubyUI.Form(action: session_path, method: "post", class: "flex flex-col gap-4") do
       input(type: "hidden", name: "authenticity_token", value: form_authenticity_token)
 
-      render Components::Field.new(name: :email_address, label: "E-mail", type: :email, autocomplete: "email")
-      render Components::Field.new(name: :password, label: "Senha", type: :password, autocomplete: "current-password")
+      render Components::Field.new(name: :email_address, label: User.human_attribute_name(:email_address), type: :email, autocomplete: "email")
+      render Components::Field.new(name: :password, label: User.human_attribute_name(:password), type: :password, autocomplete: "current-password")
 
-      RubyUI.Button(type: "submit", class: "w-full") { "Entrar" }
+      RubyUI.Button(type: "submit", class: "w-full") { t(".submit") }
     end
 
     div(class: "flex flex-col gap-1 text-center text-sm text-muted-foreground") do
-      RubyUI.Link(href: new_password_path) { "Esqueci minha senha" }
+      RubyUI.Link(href: new_password_path) { t(".forgot") }
       span do
-        plain "Não tem conta? "
-        RubyUI.Link(href: new_registration_path) { "Criar agora" }
+        plain t(".no_account")
+        RubyUI.Link(href: new_registration_path) { t(".sign_up") }
       end
     end
   end
 
   private
 
-  def page_title = "Entrar"
+  def page_title = t(".title")
 
-  def page_subtitle = "Acesse sua vida financeira."
+  def page_subtitle = t(".subtitle")
 end

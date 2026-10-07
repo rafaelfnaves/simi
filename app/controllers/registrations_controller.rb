@@ -1,9 +1,7 @@
 class RegistrationsController < ApplicationController
   allow_unauthenticated_access
   rate_limit to: 10, within: 3.minutes, only: :create,
-    with: -> { redirect_to new_registration_path, alert: "Tente novamente em alguns minutos." }
-
-  CONFIRMATION_SENT = "Se este endereço puder criar uma conta, enviamos um link de confirmação para ele.".freeze
+    with: -> { redirect_to new_registration_path, alert: t("flash.rate_limited") }
 
   def new
     render Views::Registrations::New.new(user: User.new)
@@ -17,7 +15,7 @@ class RegistrationsController < ApplicationController
       render Views::Registrations::New.new(user:), status: :unprocessable_content
     else
       register(user) if user.errors.empty? && User.signup_allowed?(user.email_address)
-      redirect_to new_session_path, notice: CONFIRMATION_SENT
+      redirect_to new_session_path, notice: t("registrations.flash.confirmation_sent")
     end
   end
 

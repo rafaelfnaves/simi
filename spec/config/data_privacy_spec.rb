@@ -29,6 +29,30 @@ RSpec.describe "Data privacy configuration" do
       expect(filtered.values).to all(eq("[FILTERED]"))
     end
 
+    it "redacts a whole account form, name and institution included" do
+      filtered = filter.filter("account" => { "name" => "Itaú", "institution" => "Itaú Unibanco", "balance" => "1.234,56" })
+
+      expect(filtered["account"]).to eq("[FILTERED]")
+    end
+
+    it "redacts a category form, whose names describe how the person spends" do
+      filtered = filter.filter("category" => { "name" => "Terapia", "nature" => "expense" })
+
+      expect(filtered["category"]).to eq("[FILTERED]")
+    end
+
+    it "redacts account and category names where Active Record logs SQL binds" do
+      sql_filter = ActiveRecord::Base.inspection_filter
+
+      expect(sql_filter.filter_param("name", "Terapia")).to eq("[FILTERED]")
+      expect(sql_filter.filter_param("institution", "Itaú Unibanco")).to eq("[FILTERED]")
+    end
+
+    it "redacts them when a record is inspected, as a backtrace or error report would" do
+      expect(build(:account, name: "Reserva", institution: "Nubank").inspect).not_to include("Reserva", "Nubank")
+      expect(build(:category, name: "Terapia").inspect).not_to include("Terapia")
+    end
+
     it "leaves harmless parameters alone" do
       expect(filter.filter("page" => "2", "theme" => "dark")).to eq("page" => "2", "theme" => "dark")
     end

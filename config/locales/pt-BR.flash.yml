@@ -1,0 +1,58 @@
+pt-BR:
+  # Uma frase por recurso, escrita por extenso. Não há template compartilhado
+  # porque o português concorda em gênero — "Conta salva" e "Cartão salvo" não
+  # saem do mesmo molde — e porque cada entidade às vezes precisa dizer mais do
+  # que a frase genérica diria.
+  flash:
+    rate_limited: Tente novamente em alguns minutos.
+
+  accounts:
+    flash:
+      saved: Conta salva.
+      destroyed: Conta excluída.
+      in_use: Esta conta tem registros vinculados. Arquive-a em vez de excluir.
+    archives:
+      flash:
+        archived: Conta arquivada.
+        unarchived: Conta reativada.
+        name_taken: Já existe uma conta ativa com esse nome. Renomeie uma das duas antes de reativar.
+
+  categories:
+    flash:
+      saved: Categoria salva.
+      destroyed: Categoria excluída.
+      in_use: Esta categoria ainda tem subcategorias ou registros. Arquive-a em vez de excluir.
+    archives:
+      flash:
+        archived: Categoria arquivada, junto com suas subcategorias.
+        unarchived: Categoria reativada.
+        name_taken: Já existe uma categoria ativa com esse nome. Renomeie uma das duas antes de reativar.
+        parent_archived: A categoria-mãe está arquivada. Reative-a antes de reativar a subcategoria.
+    suggestions:
+      flash:
+        created: Categorias sugeridas criadas. Edite, arquive ou exclua o que não usar.
+
+  sessions:
+    flash:
+      rejected: E-mail ou senha incorretos.
+      confirmation_pending: Confirme seu cadastro antes de entrar. Podemos enviar um novo link.
+
+  registrations:
+    flash:
+      confirmation_sent: Se este endereço puder criar uma conta, enviamos um link de confirmação para ele.
+
+  confirmations:
+    flash:
+      link_sent: Se este endereço tiver um cadastro pendente, enviamos um novo link de confirmação.
+      link_invalid: Este link de confirmação não vale mais. Podemos enviar outro.
+
+  passwords:
+    flash:
+      link_sent: Se existir uma conta com esse e-mail, enviamos um link para redefinir a senha.
+      link_invalid: Este link de redefinição não vale mais. Peça um novo.
+      changed: Senha alterada. Entre com a nova senha.
+
+  settings:
+    profiles:
+      flash:
+        saved: Perfil atualizado.

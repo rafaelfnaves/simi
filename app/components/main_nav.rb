@@ -8,7 +8,7 @@ class Components::MainNav < Components::Base
   end
 
   def view_template
-    nav(aria_label: "Navegação principal") do
+    nav(aria_label: t(".aria_label")) do
       RubyUI.SidebarMenu do
         items.each { |item| render_item(item) }
       end
@@ -19,12 +19,12 @@ class Components::MainNav < Components::Base
 
   def items
     [
-      Item.new("Dashboard", root_path),
-      Item.new("Transações", nil),
-      Item.new("Contas", nil),
-      Item.new("Cartões", nil),
-      Item.new("Categorias", nil),
-      Item.new("Configurações", settings_profile_path)
+      Item.new(t(".dashboard"), root_path),
+      Item.new(t(".transactions"), nil),
+      Item.new(t(".accounts"), accounts_path),
+      Item.new(t(".cards"), nil),
+      Item.new(t(".categories"), categories_path),
+      Item.new(t(".settings"), settings_profile_path)
     ]
   end
 
@@ -37,7 +37,7 @@ class Components::MainNav < Components::Base
       else
         RubyUI.SidebarMenuButton(as: :span, aria_disabled: "true", class: "cursor-not-allowed opacity-50") do
           span { item.label }
-          RubyUI.Badge(variant: :secondary, class: "ml-auto") { "Em breve" }
+          RubyUI.Badge(variant: :outline, size: :sm, class: "ml-auto") { t(".soon") }
         end
       end
     end

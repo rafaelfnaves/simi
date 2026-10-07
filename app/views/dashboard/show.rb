@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class Views::Dashboard::Show < Views::Base
+  # @param consolidated_balance [BigDecimal, nil] nil while no account holds money
+  def initialize(consolidated_balance: nil)
+    @consolidated_balance = consolidated_balance
+  end
+
   def view_template
-    render Components::PageHeader.new(
-      title: "Dashboard",
-      subtitle: "Sua vida financeira em um só lugar."
-    )
+    render Components::PageHeader.new(title: t(".title"), subtitle: t(".subtitle"))
 
     div(class: "grid gap-4 sm:grid-cols-2 lg:grid-cols-3") do
       metrics.each { |metric| render Components::StatCard.new(**metric) }
@@ -20,34 +22,24 @@ class Views::Dashboard::Show < Views::Base
 
   def metrics
     [
-      { label: "Saldo consolidado", amount: 0, hint: "Cadastre suas contas para ver o saldo." },
-      { label: "Receitas do mês", amount: 0, hint: "Nenhuma receita registrada neste mês." },
-      { label: "Despesas do mês", amount: 0, hint: "Nenhuma despesa registrada neste mês." }
+      { label: t(".consolidated"), amount: @consolidated_balance, tone: :signed,
+        hint: consolidated_hint },
+      { label: t(".income"), amount: 0, hint: t(".income_hint") },
+      { label: t(".expenses"), amount: 0, hint: t(".expenses_hint") }
     ]
   end
 
+  def consolidated_hint
+    @consolidated_balance.nil? ? t(".consolidated_empty") : t(".consolidated_hint")
+  end
+
   def panels
-    [
+    %w[ by_category by_project monthly latest ].map do |panel|
       {
-        title: "Gastos por categoria",
-        empty_title: "Nada para mostrar ainda",
-        empty_description: "Quando houver despesas categorizadas, elas aparecem aqui divididas por categoria."
-      },
-      {
-        title: "Despesas por projeto",
-        empty_title: "Nenhum projeto em andamento",
-        empty_description: "Agrupe gastos de uma viagem ou reforma em um projeto para acompanhar o total."
-      },
-      {
-        title: "Evolução mensal",
-        empty_title: "Ainda sem histórico",
-        empty_description: "Depois de alguns meses de lançamentos, a evolução das suas receitas e despesas aparece aqui."
-      },
-      {
-        title: "Últimas movimentações",
-        empty_title: "Nenhuma movimentação",
-        empty_description: "Importe um extrato ou registre um lançamento para começar."
+        title: t(".#{panel}"),
+        empty_title: t(".#{panel}_empty_title"),
+        empty_description: t(".#{panel}_empty_description")
       }
-    ]
+    end
   end
 end

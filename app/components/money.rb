@@ -4,19 +4,25 @@
 class Components::Money < Components::Base
   include Phlex::Rails::Helpers::NumberToCurrency
 
-  # Spelled out here rather than taken from a locale file because the product
-  # has no translation layer yet and the currency is not user-selectable.
-  BRL = {
-    unit: "R$", separator: ",", delimiter: ".", precision: 2,
-    format: "%u %n", negative_format: "-%u %n"
-  }.freeze
-
-  def initialize(amount, **attrs)
+  # @param tone [Symbol, nil] `:signed` marks a negative amount as money the person
+  #   owes rather than holds; the default leaves the colour to whatever contains it
+  def initialize(amount, tone: nil, **attrs)
     @amount = amount
+    @tone = tone
     @attrs = attrs
   end
 
   def view_template
-    span(**@attrs) { number_to_currency(@amount, **BRL) }
+    span(**attributes) { number_to_currency(@amount) }
+  end
+
+  private
+
+  def attributes
+    @attrs.merge(class: [ @attrs[:class], tone_class ].compact.presence)
+  end
+
+  def tone_class
+    "text-destructive" if @tone == :signed && @amount.to_d.negative?
   end
 end

@@ -24,4 +24,26 @@ RSpec.describe Components::Money do
   it "accepts a decimal without losing precision" do
     expect(rendered(BigDecimal("1234567.89"))).to include("1.234.567,89")
   end
+
+  describe "tone: :signed" do
+    def signed(amount) = render_fragment(described_class.new(amount, tone: :signed)).at_css("span")
+
+    it "marks a negative amount as money the person owes" do
+      expect(signed(-90.5)["class"]).to include("text-destructive")
+    end
+
+    it "leaves a positive amount to the colour of whatever contains it" do
+      expect(signed(90.5)["class"]).to be_nil
+    end
+
+    it "treats zero as not negative" do
+      expect(signed(0)["class"]).to be_nil
+    end
+
+    it "keeps the classes it was given" do
+      fragment = render_fragment(described_class.new(-1, tone: :signed, class: "text-2xl"))
+
+      expect(fragment.at_css("span")["class"]).to include("text-2xl", "text-destructive")
+    end
+  end
 end

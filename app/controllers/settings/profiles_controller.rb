@@ -1,6 +1,4 @@
 class Settings::ProfilesController < ApplicationController
-  SAVED = "Perfil atualizado.".freeze
-
   def show
     render Views::Settings::Profiles::Show.new(user: Current.user)
   end
@@ -9,7 +7,7 @@ class Settings::ProfilesController < ApplicationController
     user = Current.user
 
     if user.update(profile_params)
-      redirect_to settings_profile_path, notice: SAVED
+      redirect_to settings_profile_path, notice: t("settings.profiles.flash.saved")
     else
       render Views::Settings::Profiles::Show.new(user:), status: :unprocessable_content
     end

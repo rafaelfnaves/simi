@@ -13,14 +13,14 @@ class Views::Passwords::Edit < Views::AuthBase
       input(type: "hidden", name: "authenticity_token", value: form_authenticity_token)
       input(type: "hidden", name: "_method", value: "patch")
 
-      render Components::Field.new(name: :password, label: "Nova senha", model: @user, type: :password, autocomplete: "new-password")
-      render Components::Field.new(name: :password_confirmation, label: "Repita a nova senha", type: :password, autocomplete: "new-password")
+      render Components::Field.new(name: :password, label: t(".password"), model: @user, type: :password, autocomplete: "new-password")
+      render Components::Field.new(name: :password_confirmation, label: t(".password_confirmation"), type: :password, autocomplete: "new-password")
 
-      RubyUI.Button(type: "submit", class: "w-full") { "Salvar nova senha" }
+      RubyUI.Button(type: "submit", class: "w-full") { t(".submit") }
     end
   end
 
   private
 
-  def page_title = "Escolher nova senha"
+  def page_title = t(".title")
 end

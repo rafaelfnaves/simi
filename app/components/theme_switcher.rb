@@ -6,7 +6,6 @@
 class Components::ThemeSwitcher < Components::Base
   include Phlex::Rails::Helpers::FormAuthenticityToken
 
-  LABEL = "Alternar tema"
 
   def initialize(theme:)
     @theme = theme
@@ -18,7 +17,7 @@ class Components::ThemeSwitcher < Components::Base
       input(type: "hidden", name: "_method", value: "patch")
       input(type: "hidden", name: "theme", value: next_theme, data: { theme_target: "field" })
 
-      RubyUI.Toggle(pressed: dark?, aria: { label: LABEL }) do
+      RubyUI.Toggle(pressed: dark?, aria: { label: t(".label") }) do
         moon_icon
         sun_icon
       end

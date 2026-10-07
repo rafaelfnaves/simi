@@ -8,6 +8,8 @@ class User < ApplicationRecord
 
   has_secure_password
   has_many :sessions, dependent: :destroy
+  has_many :accounts, dependent: :destroy
+  has_many :categories, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   normalizes :name, with: ->(n) { n.strip }
@@ -17,6 +19,7 @@ class User < ApplicationRecord
   validates :password, length: { minimum: MINIMUM_PASSWORD_LENGTH }, allow_nil: true
   validates :theme, inclusion: { in: THEMES }
   validates :time_zone, inclusion: { in: TIME_ZONES }
+  validates :locale, inclusion: { in: ->(_) { I18n.available_locales.map(&:to_s) } }
 
   generates_token_for :email_confirmation, expires_in: EMAIL_CONFIRMATION_EXPIRES_IN do
     email_address
@@ -40,6 +43,12 @@ class User < ApplicationRecord
     return false if email_address.blank?
 
     allowed_signup_email_addresses.include?(email_address.strip.downcase)
+  end
+
+  # @param theme [String] one of {THEMES}
+  # @return [String] the name a person reads for that theme
+  def self.human_theme(theme)
+    I18n.t(theme, scope: %i[ activerecord attributes user themes ])
   end
 
   def confirmed?
