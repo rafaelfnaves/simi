@@ -38,5 +38,28 @@ RSpec.describe "Category archives" do
       expect(parent.reload).to be_active
       expect(child.reload).to be_archived
     end
+
+    it "asks for the parent first when the subcategory's parent is archived" do
+      parent = create(:category, user:)
+      child = create(:category, user:, parent:)
+      parent.archive!
+
+      delete category_archive_path(child)
+
+      expect(response).to redirect_to(categories_path)
+      expect(flash[:alert]).to eq(I18n.t("categories.archives.flash.parent_archived"))
+      expect(child.reload).to be_archived
+    end
+
+    it "refuses with a message when a concurrent request takes the name first" do
+      category = create(:category, user:)
+      category.archive!
+      allow_any_instance_of(Category).to receive(:unarchive!).and_raise(ActiveRecord::RecordNotUnique)
+
+      delete category_archive_path(category)
+
+      expect(response).to redirect_to(categories_path)
+      expect(flash[:alert]).to eq(I18n.t("categories.archives.flash.name_taken"))
+    end
   end
 end

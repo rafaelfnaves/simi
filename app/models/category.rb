@@ -63,6 +63,7 @@ class Category < ApplicationRecord
     if: :active?
   validate :parent_must_belong_to_the_same_user
   validate :parent_must_be_a_root
+  validate :parent_must_be_active, if: :active?
   validate :nature_cannot_change, on: :update
 
   scope :active, -> { where(archived_at: nil) }
@@ -150,6 +151,13 @@ class Category < ApplicationRecord
 
     def parent_must_be_a_root
       errors.add(:parent_id, :too_deep) unless parent.nil? || parent.root?
+    end
+
+    # Archiving a category takes its subcategories with it so that no branch is
+    # left orphaned (spec FR-021); an active child under an archived parent would
+    # undo that, whether it is created there or reactivated there.
+    def parent_must_be_active
+      errors.add(:parent_id, :archived) if parent&.archived?
     end
 
     def nature_cannot_change

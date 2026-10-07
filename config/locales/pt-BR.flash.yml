@@ -27,6 +27,7 @@ pt-BR:
         archived: Categoria arquivada, junto com suas subcategorias.
         unarchived: Categoria reativada.
         name_taken: Já existe uma categoria ativa com esse nome. Renomeie uma das duas antes de reativar.
+        parent_archived: A categoria-mãe está arquivada. Reative-a antes de reativar a subcategoria.
     suggestions:
       flash:
         created: Categorias sugeridas criadas. Edite, arquive ou exclua o que não usar.

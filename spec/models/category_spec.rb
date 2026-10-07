@@ -22,6 +22,15 @@ RSpec.describe Category do
       expect(category.errors[:nature]).to be_present
     end
 
+    it "refuses an archived parent, which would leave an active branch orphaned" do
+      parent = create(:category)
+      parent.archive!
+      category = build(:category, user: parent.user, parent:)
+
+      expect(category).not_to be_valid
+      expect(category.errors.added?(:parent_id, :archived)).to be(true)
+    end
+
     it "refuses a parent that belongs to someone else" do
       category = build(:category, user: create(:user), parent: create(:category))
 
@@ -124,6 +133,15 @@ RSpec.describe Category do
       parent.unarchive!
 
       expect(parent.reload).to be_active
+      expect(child.reload).to be_archived
+    end
+
+    it "will not bring a subcategory back while its parent stays archived" do
+      parent = create(:category)
+      child = create(:category, user: parent.user, parent:)
+      parent.archive!
+
+      expect { child.unarchive! }.to raise_error(ActiveRecord::RecordInvalid)
       expect(child.reload).to be_archived
     end
 
