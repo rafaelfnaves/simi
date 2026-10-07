@@ -11,5 +11,8 @@ Rails.application.config.filter_parameters += [
   :amount, :balance, :description, :notes, :account, :agency, :iban, :pix, :card, :statement,
   # A category name describes how someone spends — "Terapia", "Advogado" — which is
   # the same class of fact as the amount beside it.
-  :category
+  :category,
+  # Also matched against column names when Active Record logs SQL binds and inspects
+  # records, where an account or category name shows up as plain `name`.
+  :name, :institution
 ]
