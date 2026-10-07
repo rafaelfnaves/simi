@@ -48,3 +48,6 @@ __pycache__/
 .claude-on-rails/sessions/
 .claude-swarm/
 claude-swarm.log
+
+# Playwright MCP snapshots and screenshots.
+.playwright-mcp/
